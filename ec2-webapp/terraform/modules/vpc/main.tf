@@ -45,7 +45,7 @@ resource "aws_security_group" "security-group-dev-apse2-01" {
 
 # ----------------------------------------------------------------------------------------
 # Internet Gateway and Route Table to access the public internet. 
-# The SSM Agent on your EC2 instance needs to communicate with the 
+# The SSM Agent on the EC2 instance needs to communicate with the 
 # AWS Systems Manager service endpoints to register the instance, send status updates, 
 # and receive commands. These endpoints are hosted on the public internet.
 # ----------------------------------------------------------------------------------------

@@ -10,8 +10,6 @@ resource "aws_lb" "alb-dev-apse2-01" {
   }
 }
 
-
-
 resource "aws_lb_target_group" "alb-tg-dev-apse2-01" {
   name     = "alb-tg-dev-apse2-01"
   port     = 80
