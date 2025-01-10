@@ -32,24 +32,19 @@ def lambda_handler(event, context):
     
     # Event: Contains the message that was sent to the SQS queue    
     for record in event['Records']:
+        
         # Extract the message body
         message_body = record['body']
-        
         logger.info(f"Message Body: {message_body}")
         
-        # Parse the SNS message, which is a JSON-encoded string, into a python dictionary
-        sns_message = json.loads(message_body)
-        
-        # If 'Message' key is present, it means the message is nested
-        #   E.g. The record may have a 'Message' key, which contains a "body" key with the actual message such as "test-message-1"
-        #   If it does exist, we extract the nested message and parse it 
-        #       into a python dictionary so the body is the only thing we have to work with.
-        if 'Message' in sns_message:
-            try:
-                sns_message = json.loads(sns_message['Message'])
-                logger.info(f"Extracted nested message: {sns_message}")
-            except json.JSONDecodeError:
-                logger.warning("Error extracting nested message")
+        try:
+            # Parse the message body
+            message_body_json = json.loads(message_body) # Convert the JSON string to a dictionary
+            message = message_body_json.get('Message', message_body) # Get the value of the key 'Message' or the message body if the key does not exist
+            logger.info(f"SNS Message: {message}")        
+        except Exception as e:
+            logger.error(f"Error parsing message body: {e}")
+            continue
         
         # Write message to S3
         file_name = f"processed_message_{record['messageId']}.json"
@@ -57,7 +52,7 @@ def lambda_handler(event, context):
             s3_client.put_object(
                 Bucket=bucket_name,
                 Key=file_name,
-                Body=json.dumps({"message": sns_message}), # Convert the dictionary to a JSON string with the key "message" and the value of the message
+                Body=json.dumps({"message": message}), # Convert the dictionary to a JSON string with the key "message" and the value of the message
                 ContentType="application/json"
             )
             logger.info(f"Successfully wrote to S3: {file_name}")
