@@ -63,8 +63,9 @@ resource "aws_lambda_function" "lambda_function" {
 
   environment {
     variables = {
-      S3_BUCKET   = var.s3_bucket_name
+      S3_BUCKET_NAME   = var.s3_bucket_name
       EMAIL_TOPIC = var.email_topic_arn
+      SQS_QUEUE_URL   = var.sqs_queue_url
     }
   }
 
@@ -74,7 +75,7 @@ resource "aws_lambda_function" "lambda_function" {
 
 data "archive_file" "lambda_code" {
   type        = "zip"
-  source_dir  = "${path.module}/src"
+  source_dir  = "${path.module}/src" 
   output_path = "${path.module}/src/lambda_function.zip"
 }
 
@@ -88,6 +89,13 @@ resource "null_resource" "package_lambda" {
   provisioner "local-exec" {
     command = "zip -j ${path.module}/src/lambda_function.zip ${path.module}/src/*"
   }
+}
+
+resource "aws_lambda_event_source_mapping" "sqs_to_lambda" {
+  event_source_arn = var.sqs_queue_arn
+  function_name    = aws_lambda_function.lambda_function.arn
+  batch_size       = 10
+  enabled          = true
 }
 
 # Cloudwatch Log Group

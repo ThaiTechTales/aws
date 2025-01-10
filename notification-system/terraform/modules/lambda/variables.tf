@@ -44,6 +44,11 @@ variable "sqs_queue_arn" {
   type        = string
 }
 
+variable "sqs_queue_url" {
+  description = "URL of the SQS queue for sending messages"
+  type        = string  
+}
+
 variable "retention_in_days" {
   description = "Number of days to retain logs in CloudWatch Logs"
   default     = 30

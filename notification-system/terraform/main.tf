@@ -24,9 +24,10 @@ module "lambda" {
   function_name   = var.function_name
   handler         = var.handler
   runtime         = var.runtime
-  s3_bucket_name  = module.s3.s3_bucket_arn
+  s3_bucket_name  = module.s3.s3_bucket_name
   s3_bucket_arn   = module.s3.s3_bucket_arn
   email_topic_arn = module.sns.sns_topic_arn
   sqs_queue_arn   = module.sqs.queue_arn  
+  sqs_queue_url   = module.sqs.queue_url
   retention_in_days = var.retention_in_days
 }
