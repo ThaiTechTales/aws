@@ -47,8 +47,9 @@ def lambda_handler(event, context):
         if 'Message' in sns_message:
             try:
                 sns_message = json.loads(sns_message['Message'])
+                logger.info(f"Extracted nested message: {sns_message}")
             except json.JSONDecodeError:
-                logger.warning("The 'Message' key does not contain a valid JSON string")
+                logger.warning("Error extracting nested message")
         
         # Write message to S3
         file_name = f"processed_message_{record['messageId']}.json"
@@ -61,18 +62,7 @@ def lambda_handler(event, context):
             )
             logger.info(f"Successfully wrote to S3: {file_name}")
         except Exception as e:
-            logger.error(f"Error writing to S3: {e}")
-        
-        # Send notification via SNS
-        try:
-            sns_client.publish(
-                TopicArn=topic_arn,
-                Message=sns_message.get('Message', 'No message content'),
-                Subject="Message Processed"
-            )
-            logger.info("Successfully sent SNS notification")
-        except Exception as e:
-            logger.error(f"Error sending SNS notification: {e}")
+            logger.error(f"Error writing to S3: {e}")    
         
         # Delete the message from the SQS queue
         try:
