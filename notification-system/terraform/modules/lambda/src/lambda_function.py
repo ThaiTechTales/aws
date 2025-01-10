@@ -37,8 +37,18 @@ def lambda_handler(event, context):
         
         logger.info(f"Message Body: {message_body}")
         
-        # Parse the SNS message from the SQS message body
+        # Parse the SNS message, which is a JSON-encoded string, into a python dictionary
         sns_message = json.loads(message_body)
+        
+        # If 'Message' key is present, it means the message is nested
+        #   E.g. The record may have a 'Message' key, which contains a "body" key with the actual message such as "test-message-1"
+        #   If it does exist, we extract the nested message and parse it 
+        #       into a python dictionary so the body is the only thing we have to work with.
+        if 'Message' in sns_message:
+            try:
+                sns_message = json.loads(sns_message['Message'])
+            except json.JSONDecodeError:
+                logger.warning("The 'Message' key does not contain a valid JSON string")
         
         # Write message to S3
         file_name = f"processed_message_{record['messageId']}.json"
@@ -46,7 +56,7 @@ def lambda_handler(event, context):
             s3_client.put_object(
                 Bucket=bucket_name,
                 Key=file_name,
-                Body=json.dumps({"message": sns_message}),
+                Body=json.dumps({"message": sns_message}), # Convert the dictionary to a JSON string with the key "message" and the value of the message
                 ContentType="application/json"
             )
             logger.info(f"Successfully wrote to S3: {file_name}")
@@ -57,7 +67,7 @@ def lambda_handler(event, context):
         try:
             sns_client.publish(
                 TopicArn=topic_arn,
-                Message=f"Processed Message: {sns_message['Message']}",
+                Message=sns_message.get('Message', 'No message content'),
                 Subject="Message Processed"
             )
             logger.info("Successfully sent SNS notification")

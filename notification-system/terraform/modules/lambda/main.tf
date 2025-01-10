@@ -64,7 +64,7 @@ resource "aws_lambda_function" "lambda_function" {
   environment {
     variables = {
       S3_BUCKET_NAME   = var.s3_bucket_name
-      EMAIL_TOPIC = var.email_topic_arn
+      EMAIL_TOPIC     = var.email_topic_arn
       SQS_QUEUE_URL   = var.sqs_queue_url
     }
   }
@@ -94,7 +94,7 @@ resource "null_resource" "package_lambda" {
 resource "aws_lambda_event_source_mapping" "sqs_to_lambda" {
   event_source_arn = var.sqs_queue_arn
   function_name    = aws_lambda_function.lambda_function.arn
-  batch_size       = 10
+  batch_size       = 1
   enabled          = true
 }
 
