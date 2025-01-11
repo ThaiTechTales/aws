@@ -8,13 +8,13 @@ resource "aws_sqs_queue" "queue" {
   }
 }
 
-resource "aws_sqs_queue" "dlq" {
-  name = var.dlq_name
+# resource "aws_sqs_queue" "dlq" {
+#   name = var.dlq_name
 
-  tags = {
-    Environment = "dev"
-  }
-}
+#   tags = {
+#     Environment = "dev"
+#   }
+# }
 
 resource "aws_sqs_queue_policy" "queue_policy" {
   queue_url = aws_sqs_queue.queue.id
