@@ -11,5 +11,6 @@ This repository serves as a centralised hub for all AWS-related projects. The ai
 
 ## Projects
 
-- **webapp:** This project showcases the creation of a highly available web application infrastructure on AWS using Terraform, featuring a VPC, multi-AZ subnets, an EC2 instance with a web server, and an Application Load Balancer.
-- **logging-lambda:** This project demonstrates automated AWS infrastructure deployment using Terraform modules, including centralised logging, an S3-triggered Lambda function, and IaC provisioning for all required resources.
+- **webapp:** Highly available web application infrastructure featuring a VPC, multi-AZ subnets, an EC2 instance with a web server, and an Application Load Balancer.
+- **logging-lambda:** Centralised logging in CloudWatch that has an S3-triggered Lambda function.
+- **notification-system:** Notification and messaging system using Simple Notification Service (SNS) and Simple Queue Service (SQS) integrated with Lambda
