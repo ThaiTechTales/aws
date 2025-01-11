@@ -6,9 +6,9 @@ This project demonstrates the creation of a highly available infrastructure to h
 
 ## Technologies Used
 
-- Terraform: Infrastructure as Code (IaC) tool to provision AWS resources.
-- AWS: Cloud platform for deploying infrastructure.
-- Git: Version control for managing Terraform configuration files.
+- **AWS:** Cloud platform for deploying infrastructure.
+- **Terraform:** Infrastructure as Code (IaC) tool for automating resource provisioning.
+- **Git:** For version control.
 
 ## Project Features
 
@@ -43,20 +43,6 @@ This project demonstrates the creation of a highly available infrastructure to h
 4. **Secure Configuration:**
     - IAM roles are created to allow EC2 instances to interact with other AWS services securely.
     - Security groups are assigned to the ALB and EC2 instances to define and enforce access rules.
-
-5. **Reusable Configuration:**
-    - Terraform modules are used for network, compute, and storage configuration. This promotes consistency and makes the setup scalable and easy to replicate.
-
-6. **Deployment Workflow:**
-    - Terraform scripts are initialised, validated, and applied to provision the infrastructure.
-    - Once the infrastructure is live, the web application is deployed on the EC2 instances.
-
-7. **Testing and Validation:**
-    - ALB health checks ensure the EC2 instances are responsive.
-    - Various curl commands are used to test accessibility from within and outside the AWS environment.
-
-8. **Monitoring and Maintenance:**
-    - AWS Management Console and Terraform outputs are used to monitor and troubleshoot the deployed resources.
 
 The following diagram represents the workflow of this project.
 
