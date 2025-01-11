@@ -1,4 +1,4 @@
-# AWS Logging and Lambda Automation with Terraform
+# AWS Logging and Lambda Automation
 
 ## Project Overview
 
@@ -7,10 +7,6 @@ This project demonstrates an automated infrastructure deployment for AWS using T
 1. Centralised Logging: Logging AWS Lambda function executions to CloudWatch Logs.
 2. AWS Lambda Function: A Lambda function triggered by an S3 event, with its code stored in an S3 bucket.
 3. Infrastructure-as-Code (IaC): Terraform modules to provision all required AWS resources.
-
-## Status
-
-This project is complete and successfully provisions Lambda automation with Terraform
 
 ## Technologies Used
 
@@ -21,7 +17,7 @@ This project is complete and successfully provisions Lambda automation with Terr
 - Terraform: Infrastructure as Code (IaC) tool for AWS resource provisioning.
   - Modules: Reusable Terraform configurations.
 
-## Background
+## Key Concepts
 
 ### Terraform
 
@@ -45,24 +41,28 @@ Amazon CloudWatch Logs enable monitoring and storing of log data from AWS servic
 
 ## Project Features
 
-- Event-driven Lambda: A Lambda function triggered by S3 object events.
-- Centralised Logging: Logging Lambda execution details to CloudWatch Logs.
-- Terraform Modules: Separate modules for Lambda, S3, and IAM.
-- Secure Infrastructure: IAM roles and policies for Lambda execution permissions.
+- **Event-driven Lambda:** A Lambda function triggered by S3 object events.
+- **Centralised Logging:** Logging Lambda execution details to CloudWatch Logs.
+- **Terraform Modules:** Separate modules for Lambda, S3, and IAM.
+- **Secure Infrastructure:** IAM roles and policies for Lambda execution permissions.
+
+## Workflow
+
+1. **S3 Bucket Creation:** Terraform provisions an S3 bucket to store Lambda function code.
+2. **IAM Role and Policy:** IAM module creates a role for the Lambda function, granting it permissions for S3 and CloudWatch.
+3. **Lambda Deployment:** Terraform deploys the Lambda function using the code uploaded to the S3 bucket.
+4. **Event Trigger:** An S3 bucket event triggers the Lambda function on object creation.
+5. **Logging:** The Lambda function writes logs to CloudWatch Logs.
+
+The following diagram represents the workflow of this project.
+
+![Architecture Diagram](images/architecture-diagram/architecture-diagram.png)
 
 ## Requirements
 
 - Terraform v1.5+
 - AWS CLI
 - AWS credentials configured.
-
-## Workflow
-
-1. S3 Bucket Creation: Terraform provisions an S3 bucket to store Lambda function code.
-2. IAM Role and Policy: IAM module creates a role for the Lambda function, granting it permissions for S3 and CloudWatch.
-3. Lambda Deployment: Terraform deploys the Lambda function using the code uploaded to the S3 bucket.
-4. Event Trigger: An S3 bucket event triggers the Lambda function on object creation.
-5. Logging: The Lambda function writes logs to CloudWatch Logs.
 
 ## Usage & Testing
 
@@ -84,19 +84,19 @@ Amazon CloudWatch Logs enable monitoring and storing of log data from AWS servic
 
 ### S3 Bucket
 
-The following shows the provisioned S3 Bucket and its objects.
+The following screenshots shows the provisioned S3 Bucket and its objects.
 
 ![S3 Bucket](images/s3/s3.png)
 
 ### IAM Role
 
-The following screenshot shows the provisioned IAM role and policy.
+The following screenshots shows the provisioned IAM role and policy.
 
 ![IAM](images/iam/iam-role.png)
 
 ### Lambda
 
-The following screenshot shows the provisioned Lambda code and its assigned role and permissions.
+The following screenshots shows the provisioned Lambda code and its assigned role and permissions.
 
 ![Lambda](images/lambda/lambda.png)
 

@@ -1,12 +1,8 @@
-# High Availability Web Application Infrastructure on AWS using Terraform
+# Web Application Infrastructure
 
 ## Project Overview
 
 This project demonstrates the creation of a highly available infrastructure to host a web application using AWS and Terraform. The setup includes an Amazon VPC, subnets across multiple Availability Zones, an EC2 instance with a web server, and an Application Load Balancer (ALB).
-
-## Status
-
-This project is complete and successfully provisions a highly available web application infrastructure on AWS.
 
 ## Technologies Used
 
@@ -27,40 +23,6 @@ This project is complete and successfully provisions a highly available web appl
   - IAM roles for instance profiles.
 - Reusable Terraform Modules:
   - Separate modules for networking, compute, and storage.
-
-## Background
-
-### Terraform
-
-Terraform is an open-source IaC tool that allows users to define and provision infrastructure in a declarative configuration language. By using modules, Terraform configurations become reusable and maintainable.
-
-### IAM Roles
-
-IAM roles in AWS are a way to grant temporary permissions to entities like AWS services, users, or applications to perform specific actions on your behalf.
-
-### Amazon VPC (Virtual Private Cloud)
-
-Amazon VPC is a logically isolated section of AWS where users can define and control the networking setup, including subnets, route tables, and gateways. This ensures secure communication and segmentation of resources. In this project, the VPC provides the foundational network for hosting the web application.
-
-### Subnets and Availability Zones (AZs)
-
-Subnets are subdivisions of the VPC, enabling segregation of resources into public and private networks. Resources in public subnets are accessible from the internet, while private subnets are not directly exposed. Using multiple AZs ensures high availability by preventing single points of failure due to zone outages.
-
-### Internet Gateway and Route Tables
-
-The Internet Gateway enables outbound internet access for resources in public subnets. Route tables define how traffic is routed within the VPC, linking subnets to the gateway for external communication.
-
-### EC2 Instances
-
-Amazon Elastic Compute Cloud (EC2) instances are virtual servers running the web application. These instances are configured with a web server (e.g., Apache) to serve HTTP requests.
-
-### Application Load Balancer (ALB)
-
-ALBs distribute incoming traffic across multiple EC2 instances, ensuring reliability, scalability, and fault tolerance. ALBs automatically detect and bypass unhealthy instances to provide uninterrupted service.
-
-### Security Groups
-
-Security groups act as virtual firewalls, controlling inbound and outbound traffic to AWS resources. In this project, they ensure only authorised access to EC2 instances and ALBs.
 
 ## Workflow
 
@@ -96,6 +58,44 @@ Security groups act as virtual firewalls, controlling inbound and outbound traff
 8. **Monitoring and Maintenance:**
     - AWS Management Console and Terraform outputs are used to monitor and troubleshoot the deployed resources.
 
+The following diagram represents the workflow of this project.
+
+![Architecture Diagram](images/architecture-diagram/architecture-diagram.png)
+
+## Key Concepts
+
+### Terraform
+
+Terraform is an open-source IaC tool that allows users to define and provision infrastructure in a declarative configuration language. By using modules, Terraform configurations become reusable and maintainable.
+
+### IAM Roles
+
+IAM roles in AWS are a way to grant temporary permissions to entities like AWS services, users, or applications to perform specific actions on your behalf.
+
+### Amazon VPC (Virtual Private Cloud)
+
+Amazon VPC is a logically isolated section of AWS where users can define and control the networking setup, including subnets, route tables, and gateways. This ensures secure communication and segmentation of resources. In this project, the VPC provides the foundational network for hosting the web application.
+
+### Subnets and Availability Zones (AZs)
+
+Subnets are subdivisions of the VPC, enabling segregation of resources into public and private networks. Resources in public subnets are accessible from the internet, while private subnets are not directly exposed. Using multiple AZs ensures high availability by preventing single points of failure due to zone outages.
+
+### Internet Gateway and Route Tables
+
+The Internet Gateway enables outbound internet access for resources in public subnets. Route tables define how traffic is routed within the VPC, linking subnets to the gateway for external communication.
+
+### Application Load Balancer (ALB)
+
+ALBs distribute incoming traffic across multiple EC2 instances, ensuring reliability, scalability, and fault tolerance. ALBs automatically detect and bypass unhealthy instances to provide uninterrupted service.
+
+### EC2 Instances
+
+Amazon Elastic Compute Cloud (EC2) instances are virtual servers running the web application. These instances are configured with a web server (e.g., Apache) to serve HTTP requests.
+
+### Security Groups
+
+Security groups act as virtual firewalls, controlling inbound and outbound traffic to AWS resources. In this project, they ensure only authorised access to EC2 instances and ALBs.
+
 ## Requirements
 
 - Terraform v1.5+
@@ -105,8 +105,8 @@ Security groups act as virtual firewalls, controlling inbound and outbound traff
 ## Usage
 
 1. Clone this repository.
-2. Edit `terraform.tfvars` with your AWS region and other variables.
-3. Initialize Terraform:
+2. Edit `terraform.tfvars` with the desired AWS region and other variables.
+3. Initialise Terraform:
 
    ```bash
    terraform init
