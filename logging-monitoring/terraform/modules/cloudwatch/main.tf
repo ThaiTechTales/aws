@@ -1,30 +1,67 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm#argument-reference
-resource "aws_cloudwatch_metric_alarm" "alarm" {
-  alarm_name          = var.alarm_name
-  metric_name         = var.metric_name
-  namespace           = "AWS/S3"
+resource "aws_cloudwatch_metric_alarm" "s3_put_requests" {
+  alarm_name  = var.alarm_s3_put_request_name
+  metric_name = "PutRequests"
+  namespace   = "AWS/S3"
 
-  comparison_operator = "GreaterThanThreshold"
-  
-  # Evaluation Periods: Checks if the metric exceeds the threshold for three consecutive 60-second periods.
-  #   ensures that the metric consistently meets the threshold condition over a specified number of periods before triggering the alarm.
-  evaluation_periods  = 1
-  
-  # Period: Time in seconds to evaluate the metric
-  # E.g. if the period is 60, the alarm will evaluate the metric every 60 seconds
-  period              = 30
-  
-  # Statistic: The statistic to apply to the alarm's associated metric. Either of the following is supported: SampleCount, Average, Sum, Minimum, Maximum
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+
+  # Specifies the number of consecutive periods over which the metric data is compared to the threshold.
+  # E.g. if evaluation_periods is set to 1, the alarm will evaluate the metric data for one period (e.g., one 60-second interval if period is 60) and compare it to the threshold.
+  # If evaluation_periods is set to 3, the alarm will evaluate the metric data over three consecutive periods (e.g., three 60-second intervals if period is 60) and compare the aggregated data to the threshold.
+  # In console this will be displayed as "Data points to alarm". 
+  #   E.g. if set to 10, the alarm will trigger if the metric is above the threshold for 10 consecutive periods.
+  #   This will be displayed as "Datapoints to alarm": 10 out of 10
+  evaluation_periods = 1
+
+  #  Specifies the length of time in seconds over which the metric data is aggregated for each evaluation.
+  #  E.g. if period is set to 60, the metric data is aggregated over 60-second intervals.
+  period = 60
+
+  # Statistic: The statistic to apply to the alarm's associated metric. Either of the following is supported: SampleCount, Average, Sum, Minimum, Maximum, etc.
+  # https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Statistics-definitions.html
   # Sum: The sum of the metric values for the specified period
-  statistic           = "Sum"         
-  
+  statistic = "Sum"
+
   # Threshold defines the value the metric has to be above to trigger the alarm                     
   # E.g. if the threshold is 1, the alarm will trigger if the metric is above 1
-  threshold           = 1
+  threshold = 1
 
   # Actions: The actions to execute when this alarm transitions into an ALARM state from any other state.
   # E.g. if the alarm transitions to ALARM state, it will send a notification to the SNS topic
-  alarm_actions = [ ]
+  alarm_actions = [var.sns_topic_s3_cloudwatch]
+
+  insufficient_data_actions = []
+  ok_actions                = []
+
+  # Dimensions is a map of key-value pairs to use for filtering the results of the metric query
+  dimensions = {
+    # BucketName is the name of the bucket to monitor
+    BucketName = var.bucket_cloudwatch_alarm
+
+    # FilterId is the name of the metric configuration to filter the results, configured in the aws_s3_bucket_metric resource
+    FilterId = var.filter_id
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "s3_delete_requests" {
+  alarm_name          = var.alarm_s3_delete_request_name
+  metric_name         = "DeleteRequests"
+  namespace           = "AWS/S3"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 1
+
+  alarm_actions             = [var.sns_topic_s3_cloudwatch]
+  insufficient_data_actions = []
+  ok_actions                = []
+
+  dimensions = {
+    BucketName = var.bucket_cloudwatch_alarm
+    FilterId   = var.filter_id
+  }
 }
 
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
@@ -50,8 +87,8 @@ resource "aws_iam_role" "cloudtrail_role" {
 }
 
 resource "aws_iam_role_policy" "cloudtrail_policy" {
-  name   = var.iam_role_policy_name
-  role   = aws_iam_role.cloudtrail_role.id
+  name = var.iam_role_policy_name
+  role = aws_iam_role.cloudtrail_role.id
 
   policy = jsonencode({
     Version = "2012-10-17"

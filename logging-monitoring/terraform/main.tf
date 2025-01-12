@@ -1,27 +1,38 @@
-module "cloudtrail" {
-  source          = "./modules/cloudtrail"
-  cloudtrail_name = var.cloudtrail_name
-  
-  bucket_name     = module.s3.bucket_name
-  bucket_policy   = module.s3.bucket_policy
-  log_group_arn   = module.cloudwatch.log_group_arn
-  iam_role_arn    = module.cloudwatch.iam_role_arn  
-  iam_role_policy = module.cloudwatch.iam_role_policy.id
+# module "cloudtrail" {
+#   source          = "./modules/cloudtrail"
+#   cloudtrail_name = var.cloudtrail_name
 
-  depends_on = [ module.cloudwatch ]
-}
+#   bucket_name     = module.s3.bucket_cloudtrail
+#   bucket_policy   = module.s3.bucket_policy
+#   log_group_arn   = module.cloudwatch.log_group_arn
+#   iam_role_arn    = module.cloudwatch.iam_role_arn
+#   iam_role_policy = module.cloudwatch.iam_role_policy.id
+
+#   depends_on = [module.cloudwatch]
+# }
 
 module "cloudwatch" {
-  source         = "./modules/cloudwatch"
-  alarm_name     = var.alarm_name  
-  metric_name    = var.metric_name
-  log_group_name = var.log_group_name
-  iam_role_name = var.iam_role_name
-  iam_role_policy_name = var.iam_role_policy_name
+  source                       = "./modules/cloudwatch"
+  log_group_name               = var.log_group_name
+  alarm_s3_put_request_name    = var.alarm_s3_put_request_name
+  alarm_s3_delete_request_name = var.alarm_s3_delete_request_name
+  iam_role_name                = var.iam_role_name
+  iam_role_policy_name         = var.iam_role_policy_name
+  bucket_cloudtrail            = module.s3.bucket_cloudtrail
+  bucket_cloudwatch_alarm      = module.s3.bucket_cloudwatch_alarm
+  filter_id                    = module.s3.filter_id
+  sns_topic_s3_cloudwatch      = module.sns.topic_arn
 }
 
 module "s3" {
-  source      = "./modules/s3"
-  bucket_name = var.bucket_name
-  test_cloudwatch_alarm_bucket_name = var.test_cloudwatch_alarm_bucket_name
+  source                  = "./modules/s3"
+  bucket_cloudtrail       = var.bucket_cloudtrail
+  cloudwatch_alarm_bucket = var.bucket_cloudwatch_alarm
+  filter_id               = var.filter_id
+}
+
+module "sns" {
+  source        = "./modules/sns"
+  topic_name    = var.topic_name
+  email_address = var.email_address
 }

@@ -10,20 +10,20 @@ variable "bucket_name" {
 
 variable "bucket_policy" {
   description = "The bucket policy"
-  type        = string  
+  type        = string
 }
 
 variable "log_group_arn" {
   description = "The ARN of the CloudWatch Log Group"
-  type        = string  
+  type        = string
 }
 
 variable "iam_role_arn" {
   description = "The IAM role ARN for CloudTrail"
-  type        = string    
+  type        = string
 }
 
 variable "iam_role_policy" {
   description = "The IAM role policy for CloudTrail"
-  type        = string      
+  type        = string
 }

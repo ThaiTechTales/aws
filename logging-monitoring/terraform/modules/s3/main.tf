@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "cloudtrail_bucket" {
-  bucket = var.bucket_name
+  bucket = var.bucket_cloudtrail
 
   tags = {
     Environment = "Dev"
@@ -7,9 +7,9 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
 }
 
 
-# Test S3 bucket to test Cloudwatch Alar
+# Test S3 bucket to test Cloudwatch Alarm
 resource "aws_s3_bucket" "cloudwatch_alarm_bucket" {
-  bucket = var.test_cloudwatch_alarm_bucket_name
+  bucket = var.cloudwatch_alarm_bucket
 
   tags = {
     Environment = "Dev"
@@ -18,9 +18,9 @@ resource "aws_s3_bucket" "cloudwatch_alarm_bucket" {
 
 # This resource creates a metric configuration for the bucket which will be sent to CloudWatch
 # If not specify it will filter all the metrics to be sent to CloudWatch
-resource "aws_s3_bucket_metric" "cloudtrail_bucket_metric" {
+resource "aws_s3_bucket_metric" "cloudwatch_bucket_metric" {
   bucket = aws_s3_bucket.cloudwatch_alarm_bucket.id
-  name   = "EntireBucket"
+  name   = var.filter_id
 }
 
 # This bucket policy is required for CloudTrail to write logs to the bucket
@@ -36,7 +36,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
         Principal = {
           Service = "cloudtrail.amazonaws.com"
         }
-        Action = "s3:GetBucketAcl" # Access Control List is a list of permissions attached to an object
+        Action   = "s3:GetBucketAcl" # Access Control List is a list of permissions attached to an object
         Resource = "arn:aws:s3:::${aws_s3_bucket.cloudtrail_bucket.id}"
       },
       {
@@ -44,14 +44,14 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
         Principal = {
           Service = "cloudtrail.amazonaws.com"
         }
-        Action = "s3:PutObject"
+        Action   = "s3:PutObject"
         Resource = "arn:aws:s3:::${aws_s3_bucket.cloudtrail_bucket.id}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
-        
+
         # This condition is required to ensure that the bucket owner has full control over the objects
         Condition = {
           StringEquals = {
             # s3:x-amz-acl is a header that allows the bucket owner to have full control over the object
-            "s3:x-amz-acl": "bucket-owner-full-control"
+            "s3:x-amz-acl" : "bucket-owner-full-control"
           }
         }
       }

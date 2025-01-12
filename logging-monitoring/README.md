@@ -91,6 +91,58 @@ cloud watch request metric
 
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/configure-request-metrics-bucket.html
 
+
+Exactly! Here's a detailed breakdown of how CloudTrail Event History and Trails work, and how they interact with each other:
+
+CloudTrail Event History
+Always Active:
+CloudTrail Event History is a default feature in AWS that records the last 90 days of management events for free.
+It tracks management events (API calls related to creating, modifying, or deleting AWS resources) across all regions, even if no CloudTrail trail is configured.
+Events Recorded:
+Read Management Events: E.g., DescribeInstances, ListBuckets.
+Write Management Events: E.g., RunInstances, CreateBucket, DeleteBucket.
+Access:
+Accessible via the CloudTrail Console under Event History.
+You can filter by:
+Event source: AWS service (e.g., ec2.amazonaws.com).
+Event name: Specific API action (e.g., CreateBucket).
+Time range: Last 90 days.
+
+CloudTrail Trails
+A trail allows you to manage how and where CloudTrail records and stores logs for longer-term tracking, detailed logging, and specific customisation. Here's what a trail does:
+
+1. Extended Log Management
+Default Event Logging:
+A trail ensures all management events (read and write) are stored beyond 90 days in a destination like S3, CloudWatch Logs, or both.
+Customisable Data Retention:
+Logs stored in S3 can have lifecycle policies for longer-term storage (e.g., archival to Glacier).
+CloudWatch Logs can be used for real-time monitoring and log processing.
+2. Captures Additional Events
+Data Events:
+By default, CloudTrail Event History does not log data events (e.g., GetObject or PutObject for S3, or Invoke for Lambda).
+A trail can be configured to capture data events, which include actions on S3 objects, DynamoDB items, and Lambda functions.
+Insight Events:
+Detects unusual activity patterns (e.g., an unusual spike in API calls).
+3. Customisable Filtering
+Trails allow you to filter which events are logged and stored:
+Management Events:
+Capture only read, write, or both types of events.
+Data Events:
+Select specific buckets, Lambda functions, or all resources.
+Regions:
+Choose specific regions or make the trail multi-region.
+This ensures you only log and store the events you care about, reducing unnecessary costs.
+4. Log Destinations
+S3:
+Store logs in an S3 bucket for long-term retention.
+Example use case: Compliance audits or archival storage.
+CloudWatch Logs:
+Enable real-time log analysis, set up alarms, and integrate with AWS services like EventBridge for automation.
+
+
+S3 Predefined metrics
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/metrics-dimensions.html
+
 ## Cleanup
 
 Destroy resources
