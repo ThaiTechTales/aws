@@ -1,15 +1,15 @@
-# module "cloudtrail" {
-#   source          = "./modules/cloudtrail"
-#   cloudtrail_name = var.cloudtrail_name
+module "cloudtrail" {
+  source          = "./modules/cloudtrail"
+  cloudtrail_name = var.cloudtrail_name
 
-#   bucket_name     = module.s3.bucket_cloudtrail
-#   bucket_policy   = module.s3.bucket_policy
-#   log_group_arn   = module.cloudwatch.log_group_arn
-#   iam_role_arn    = module.cloudwatch.iam_role_arn
-#   iam_role_policy = module.cloudwatch.iam_role_policy.id
+  bucket_name     = module.s3.bucket_cloudtrail
+  bucket_policy   = module.s3.bucket_policy
+  log_group_arn   = module.cloudwatch.log_group_arn
+  iam_role_arn    = module.cloudwatch.iam_role_arn
+  iam_role_policy = module.cloudwatch.iam_role_policy.id
 
-#   depends_on = [module.cloudwatch]
-# }
+  depends_on = [module.cloudwatch]
+}
 
 module "cloudwatch" {
   source                       = "./modules/cloudwatch"
