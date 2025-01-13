@@ -14,8 +14,8 @@ This project demonstrates an automated infrastructure deployment for AWS using T
   - S3: Object storage for Lambda code.
   - CloudWatch Logs: Centralized logging for AWS Lambda.
   - Lambda: Serverless compute service.
-- Terraform: Infrastructure as Code (IaC) tool for AWS resource provisioning.
-  - Modules: Reusable Terraform configurations.
+- **Terraform:** Infrastructure as Code (IaC) tool for automating resource provisioning.
+- **Git:** For version control.
 
 ## Key Concepts
 
