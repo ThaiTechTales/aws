@@ -11,7 +11,7 @@ This project demonstrates the creation of a scalable and efficient notification 
 - **AWS Lambda:** A serverless compute service that processes messages and integrates with other AWS services.
 - **AWS S3:** A scalable object storage service used to store processed data.
 - **Terraform:** Infrastructure as Code (IaC) tool for automating resource provisioning.
-- **Git:** For version control of Terraform configurations.
+- **Git:** For version control.
 
 ## Project Features
 
