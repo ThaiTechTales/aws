@@ -28,7 +28,12 @@ module "cloudwatch" {
   bucket_cloudwatch_alarm = module.s3.bucket_cloudwatch_alarm
   filter_id               = module.s3.filter_id
 
-  sns_topic_s3_cloudwatch = module.sns.topic_arn
+  instance_ids_map = {
+    for idx, id in module.ec2.instance_ids_map :
+    idx => id
+  }
+
+  sns_topic_cloudwatch = module.sns.topic_arn
 }
 
 module "s3" {

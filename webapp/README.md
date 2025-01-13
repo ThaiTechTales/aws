@@ -6,7 +6,9 @@ This project demonstrates the creation of a highly available infrastructure to h
 
 ## Technologies Used
 
-- **AWS:** Cloud platform for deploying infrastructure.
+- **Amazon EC2:** Virtual servers in the cloud.
+- **Application Load Balancer:** Distributes incoming application traffic across multiple targets.
+- **VPC:** Virtual Private Cloud for provisioning a logically isolated network.
 - **Terraform:** Infrastructure as Code (IaC) tool for automating resource provisioning.
 - **Git:** For version control.
 

@@ -141,16 +141,16 @@ The following diagram represents the workflow of this project.
 | Confirm email subscription    | Once resources are deployed, confirm the subscription via the email link.  | Email subscription is active.
 | Confirm deployed `s3-dev-apse2-cloudtrail-01` S3 Bucket | Run the following in the terminal: <pre> <p>aws s3 ls</p></pre>              | `s3-dev-apse2-cloudtrail-01` S3 Bucket has been deployed.
 | Confirm deployed `cloudwatch-alarm-test` S3 Bucket | Run the following in the terminal: <pre> <p>aws s3 ls</p></pre>              | `cloudwatch-alarm-test` S3 Bucket has been deployed.
-| Confirm deployed `cloudtrail-logs-dev-apse2-01` Cloudtrail | 1. In console, navigate to the CloudTrail 2. Select Trails and select `cloudtrail-logs-dev-apse2-01`              | `cloudtrail-logs-dev-apse2-01` trail has been deployed.
-| Verify `cloudtrail-logs-dev-apse2-01` configuration | Refer to Cloudtrail screenshot              | All `cloudtrail-logs-dev-apse2-01` configurations have been eployed
-
+| Confirm deployed `cloudtrail-logs-dev-apse2-01` Cloudtrail | 1. In console, navigate to the CloudTrail <br>2. Select Trails and select `cloudtrail-logs-dev-apse2-01`              | `cloudtrail-logs-dev-apse2-01` trail has been deployed.
+| Verify `cloudtrail-logs-dev-apse2-01` configuration | Refer to Cloudtrail screenshot              | All `cloudtrail-logs-dev-apse2-01` configurations have been deployed.
 | Upload files to `cloudwatch-alarm-test` S3 Bucket  | Run the following in the terminal: <pre> <p>aws s3 cp ../src/test-data/hello-world-01.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-02.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-03.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-04.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-05.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01 </p></pre>              | Files are uploaded to `cloudwatch-alarm-test` S3 Bucket.
-
-
 | Delete files from `cloudwatch-alarm-test` S3 Bucket | Run the following in the terminal: <pre> <p>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-01.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-02.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-03.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-04.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-05.txt</p></pre>              | Files are deleted from `cloudwatch-alarm-test` S3 Bucket.
+| Run EC2 Instances | Run the following in the terminal: <pre><code>aws ec2 run-instances \ <br>--image-id ami-xxx \ <br>--count 2 \ <br>--instance-type t2.micro \ <br>--key-name my-key-pair \ <br>--security-group-ids sg-xxx \ <br>--subnet-id subnet-xxx \</p></pre>              | EC2s are running.
+| Terminate EC2 Instances | Run the following in the terminal: <pre> <p>aws ec2 terminate-instances --instance-ids <instance-id> <instance-id></p></pre>              | EC2s are terminated.
 | Verify `cloudwatch-alarm-test` S3 Bucket's Filter and Metrics| 1. In console, navigate to the S3 bucket `s3-dev-apse2-cloudwatch-alarm-test-01`.              | The S3 Bucket has been deployed. View metrics, additional charts, and request metrics. Note that the metrics can take a few minutes to register. | The entire bucket is present in Filters, and metrics data are displayed in the graph.
-| Verify Cloudwatch Alarms    | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms<br>3. Verify Cloudwatch alarms are present.  | The following alarms are present: <br>- cloudwatch-alarm-logs-dev-apse2-s3-put-01<br> - cloudwatch-alarm-logs-dev-apse2-s3-delete-01
+| Verify Cloudwatch Alarms    | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms<br>3. Verify Cloudwatch alarms are present.  | The following alarms are present: <br>`cloudwatch-alarm-logs-dev-apse2-s3-put-01`<br>`cloudwatch-alarm-logs-dev-apse2-s3-delete-01`<br>`cloudwatch-alarm-logs-dev-apse2-ec2-create-01`<br>`cloudwatch-alarm-logs-dev-apse2-ec2-terminate-01`<br>`cloudwatch-alarm-logs-dev-apse2-ec2-cpu-utilization`
 | Verify Cloudwatch Alarms Configuration     | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms.<br>3. Select an alarm.<br>4. Verify details (for further comparison, refer to the Cloudwatch screenshot).  | All details are present.
+| Verify Cloudwatch state `Alarms`    | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms<br>3. Verify Cloudwatch alarms are present.  | Each Alarm entered the `Alarm` state after a few minutes after executing the previous commands. For further reference, please review screenshots:
 | Verify SNS Alert (Email)    | Verify email subscription.  | An email notification is sent when the alarm triggers.
 | Verify `cloudtrail-logs-dev-apse2-01` logs (S3 Bucket)   | Run the following in the terminal: <pre> <p>aws s3 ls s3-dev-apse2-cloudtrail-01 --recursive</p></pre>   | Logs are be present.
 | (Optional) Trigger Alarm to `ALERT` state | Run the following in the terminal:<pre> <p>aws cloudwatch set-alarm-state --alarm-name cloudwatch-alarm-logs-dev-apse2-cloudtrail-01 --state-reason "Testing the Amazon Cloudwatch alarm" --state-value ALARM</p></pre> | Alarm's state is updated to ALARM state |
@@ -159,6 +159,9 @@ The following diagram represents the workflow of this project.
 ## Cleanup
 
 1. Empty S3 Buckets
+    1. Navigate to S3 Bucket
+    2. Select S3 buckets
+    3. Empty Bucket
 
 2. Destroy resources
 
@@ -167,3 +170,45 @@ The following diagram represents the workflow of this project.
     ```
 
 ## Screenshots
+
+### Amazon S3
+
+The following screenshots below shows the provisioned S3 Buckets
+
+![S3 Bucket](images/s3/s3-01.png)
+![S3 Bucket](images/s3/s3-02.png)
+![S3 Bucket](images/s3/s3-03.png)
+
+### AWS CloudTrail
+
+The following screenshot below shows the provisioned CloudTrail
+
+![CloudTrail](images/cloudtrail/cloudtrail-01.png)
+![CloudTrail](images/cloudtrail/cloudtrail-02.png)
+
+### EC2
+
+The following screenshots below shows the provisioned EC2s
+
+![EC2](images/ec2/ec2-01.png)
+
+### Amazon Cloudwatch
+
+The following screenshots below shows the provisioned CloudWatch Alarms and Log Group
+
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-01.png)
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-02.png)
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-03.png)
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-04.png)
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-05.png)
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-06.png)
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-07.png)
+![CloudWatch Log Group](images/cloudwatch/cloudwatch-08.png)
+
+### Amazon SNS
+
+The following screenshots below shows the provisioned SNS
+
+![SNS](images/sns/sns-01.png)
+![SNS](images/sns/sns-02.png)
+![SNS](images/sns/sns-03.png)

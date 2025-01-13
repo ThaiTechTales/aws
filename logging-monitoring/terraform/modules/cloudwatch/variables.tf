@@ -53,7 +53,12 @@ variable "filter_id" {
   type        = string
 }
 
-variable "sns_topic_s3_cloudwatch" {
+variable "sns_topic_cloudwatch" {
   description = "The name of the SNS topic"
   type        = string
+}
+
+variable "instance_ids_map" {
+  description = "Map of EC2 instance IDs"
+  type        = map(string)
 }

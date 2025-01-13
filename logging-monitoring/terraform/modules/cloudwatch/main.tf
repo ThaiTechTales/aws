@@ -9,9 +9,6 @@ resource "aws_cloudwatch_metric_alarm" "s3_put_requests" {
   # Specifies the number of consecutive periods over which the metric data is compared to the threshold.
   # E.g. if evaluation_periods is set to 1, the alarm will evaluate the metric data for one period (e.g., one 60-second interval if period is 60) and compare it to the threshold.
   # If evaluation_periods is set to 3, the alarm will evaluate the metric data over three consecutive periods (e.g., three 60-second intervals if period is 60) and compare the aggregated data to the threshold.
-  # In console this will be displayed as "Data points to alarm". 
-  #   E.g. if set to 10, the alarm will trigger if the metric is above the threshold for 10 consecutive periods.
-  #   This will be displayed as "Datapoints to alarm": 10 out of 10
   evaluation_periods = 1
 
   #  Specifies the length of time in seconds over which the metric data is aggregated for each evaluation.
@@ -29,7 +26,7 @@ resource "aws_cloudwatch_metric_alarm" "s3_put_requests" {
 
   # Actions: The actions to execute when this alarm transitions into an ALARM state from any other state.
   # E.g. if the alarm transitions to ALARM state, it will send a notification to the SNS topic
-  alarm_actions = [var.sns_topic_s3_cloudwatch]
+  alarm_actions = [var.sns_topic_cloudwatch]
 
   insufficient_data_actions = []
   ok_actions                = []
@@ -54,7 +51,7 @@ resource "aws_cloudwatch_metric_alarm" "s3_delete_requests" {
   statistic           = "Sum"
   threshold           = 1
 
-  alarm_actions             = [var.sns_topic_s3_cloudwatch]
+  alarm_actions             = [var.sns_topic_cloudwatch]
   insufficient_data_actions = []
   ok_actions                = []
 
@@ -104,7 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2_creation" {
   statistic           = "Sum"
   threshold           = 1
 
-  alarm_actions             = [var.sns_topic_s3_cloudwatch]
+  alarm_actions             = [var.sns_topic_cloudwatch]
   insufficient_data_actions = []
   ok_actions                = []
 }
@@ -119,12 +116,41 @@ resource "aws_cloudwatch_metric_alarm" "ec2_termination" {
   statistic           = "Sum"
   threshold           = 1
 
-  alarm_actions             = [var.sns_topic_s3_cloudwatch]
+  alarm_actions             = [var.sns_topic_cloudwatch]
   insufficient_data_actions = []
   ok_actions                = []
 }
 
-# CPU Utilization Alarm for all EC2 instances
+
+resource "aws_cloudwatch_metric_alarm" "ec2_cpu_utilization_alarm" {
+  for_each            = var.instance_ids_map
+  
+  alarm_name          = "${var.alarm_ec2_cpu_utilization_name}-${each.value}-01"
+  namespace           = "AWS/EC2"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  metric_name         = "CPUUtilization"
+  statistic           = "Average"
+  
+  # E.g. If...
+  #   Evaluation period: 5
+  #   Period: 60
+  #   Threshold: 90
+  #   In console, it'll show CPUUtilization >= 90 for 5 datapoints within 5 minutes
+  # threshold           = 90
+  # evaluation_periods  = 5
+  # period              = 60
+
+  # For testing purposes, the values are set low
+  evaluation_periods  = 1
+  period              = 1  
+  threshold           = 60
+
+  dimensions = {
+    InstanceId = each.value
+  }
+
+  alarm_actions = [var.sns_topic_cloudwatch]
+}
 
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
   name              = var.log_group_name
