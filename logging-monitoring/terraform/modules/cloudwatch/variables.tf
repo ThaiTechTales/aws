@@ -8,6 +8,21 @@ variable "alarm_s3_delete_request_name" {
   type        = string
 }
 
+variable "alarm_ec2_create_name" {
+  description = "The name of the filter"
+  type        = string
+}
+
+variable "alarm_ec2_terminate_name" {
+  description = "The name of the filter"
+  type        = string
+}
+
+variable "alarm_ec2_cpu_utilization_name" {
+  description = "The name of the filter"
+  type        = string
+}
+
 variable "iam_role_name" {
   description = "The name of the IAM role"
   type        = string

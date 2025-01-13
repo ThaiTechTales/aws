@@ -2,6 +2,7 @@ resource "aws_cloudtrail" "cloudtrail" {
   name                       = var.cloudtrail_name
   s3_bucket_name             = var.bucket_name
   is_multi_region_trail      = true
+  enable_log_file_validation = true
   cloud_watch_logs_group_arn = "${var.log_group_arn}:*" # CloudWatch Logs requires a trailing :*
   cloud_watch_logs_role_arn  = var.iam_role_arn
 

@@ -42,7 +42,7 @@ This project sets up comprehensive logging and monitoring for AWS resources. It 
   - For short-term investigation (e.g., troubleshooting something that happened recently).
   - To quickly verify API activity without additional setup.
 - Use a Trail:
-  - For compliance or audit requirements that need longer-term retention or deeper logging (e.g., PCI DSS, GDPR).
+  - For compliance or audit requirements that need longer-term retention or deeper logging.
   - When monitoring data events (e.g., S3 object actions or Lambda invocations).
   - For real-time monitoring and alerts with CloudWatch.
   - To log activity across multiple accounts using AWS Organizations.
@@ -90,8 +90,6 @@ Similarly, a separate alarm monitors the PutRequests metric to detect object upl
 ### CloudWatch Processes Metrics
 
 - For predefined metrics (e.g., CPUUtilization for EC2 or DeleteRequests for S3), CloudWatch automatically collects and aggregates the data at 1-minute or 5-minute intervals, depending on the monitoring level.
-- For custom metrics, log metric filters are configured to extract specific patterns (e.g., RunInstances or DeleteBucket) from the CloudTrail logs in the Log Group.
-- Custom metrics (e.g., EC2InstanceCreations, EC2InstanceTerminations) are published to CloudWatch under a custom namespace (e.g., Custom/EC2).
 
 ### CloudWatch Alarms Monitor Metrics
 
@@ -145,13 +143,17 @@ The following diagram represents the workflow of this project.
 | Confirm deployed `cloudwatch-alarm-test` S3 Bucket | Run the following in the terminal: <pre> <p>aws s3 ls</p></pre>              | `cloudwatch-alarm-test` S3 Bucket has been deployed.
 | Confirm deployed `cloudtrail-logs-dev-apse2-01` Cloudtrail | 1. In console, navigate to the CloudTrail 2. Select Trails and select `cloudtrail-logs-dev-apse2-01`              | `cloudtrail-logs-dev-apse2-01` trail has been deployed.
 | Verify `cloudtrail-logs-dev-apse2-01` configuration | Refer to Cloudtrail screenshot              | All `cloudtrail-logs-dev-apse2-01` configurations have been eployed
-| Upload files to `cloudwatch-alarm-test` S3 Bucket  | Run the following in the terminal: <pre> <p>aws s3 cp ../src/test-data/hello-world-01.txt s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-02.txt s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-03.txt s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-04.txt s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-05.txt s3-dev-apse2-cloudwatch-alarm-test-01 </p></pre>              | Files are uploaded to `cloudwatch-alarm-test` S3 Bucket.
+
+| Upload files to `cloudwatch-alarm-test` S3 Bucket  | Run the following in the terminal: <pre> <p>aws s3 cp ../src/test-data/hello-world-01.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-02.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-03.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-04.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01<br>aws s3 cp ../src/test-data/hello-world-05.txt s3://s3-dev-apse2-cloudwatch-alarm-test-01 </p></pre>              | Files are uploaded to `cloudwatch-alarm-test` S3 Bucket.
+
+
 | Delete files from `cloudwatch-alarm-test` S3 Bucket | Run the following in the terminal: <pre> <p>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-01.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-02.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-03.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-04.txt<br>aws s3 rm s3://s3-dev-apse2-cloudwatch-alarm-test-01/hello-world-05.txt</p></pre>              | Files are deleted from `cloudwatch-alarm-test` S3 Bucket.
 | Verify `cloudwatch-alarm-test` S3 Bucket's Filter and Metrics| 1. In console, navigate to the S3 bucket `s3-dev-apse2-cloudwatch-alarm-test-01`.              | The S3 Bucket has been deployed. View metrics, additional charts, and request metrics. Note that the metrics can take a few minutes to register. | The entire bucket is present in Filters, and metrics data are displayed in the graph.
-| Check Cloudwatch Alarms    | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms<br>3. Verify Cloudwatch alarms are present.  | The following alarms are present: <br>- cloudwatch-alarm-logs-dev-apse2-s3-put-01<br> - cloudwatch-alarm-logs-dev-apse2-s3-delete-01
-| Check Cloudwatch Alarms Configuration     | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms.<br>3. Select an alarm.<br>4. Verify details (for further comparison, refer to the Cloudwatch screenshot).  | All details are present.
-| Check SNS Alert (Email)    | Verify email subscription.  | An email notification is sent when the alarm triggers.
+| Verify Cloudwatch Alarms    | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms<br>3. Verify Cloudwatch alarms are present.  | The following alarms are present: <br>- cloudwatch-alarm-logs-dev-apse2-s3-put-01<br> - cloudwatch-alarm-logs-dev-apse2-s3-delete-01
+| Verify Cloudwatch Alarms Configuration     | 1. In the console, navigate to Cloudwatch.<br>2. Select All Alarms.<br>3. Select an alarm.<br>4. Verify details (for further comparison, refer to the Cloudwatch screenshot).  | All details are present.
+| Verify SNS Alert (Email)    | Verify email subscription.  | An email notification is sent when the alarm triggers.
 | Verify `cloudtrail-logs-dev-apse2-01` logs (S3 Bucket)   | Run the following in the terminal: <pre> <p>aws s3 ls s3-dev-apse2-cloudtrail-01 --recursive</p></pre>   | Logs are be present.
+| (Optional) Trigger Alarm to `ALERT` state | Run the following in the terminal:<pre> <p>aws cloudwatch set-alarm-state --alarm-name cloudwatch-alarm-logs-dev-apse2-cloudtrail-01 --state-reason "Testing the Amazon Cloudwatch alarm" --state-value ALARM</p></pre> | Alarm's state is updated to ALARM state |
 | Verify `cloudwatch-logs-dev-apse2-cloudtrail-01` log group   |   1. In the console, navigate to CloudWatch.<br>2. Select Log groups<br>3. Select `cloudwatch-logs-dev-apse2-cloudtrail-01`.     | Log group and logs are be present.
 
 ## Cleanup

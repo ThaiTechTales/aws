@@ -64,6 +64,68 @@ resource "aws_cloudwatch_metric_alarm" "s3_delete_requests" {
   }
 }
 
+resource "aws_cloudwatch_log_metric_filter" "ec2_create" {
+  name           = "EC2InstanceCreations"
+  log_group_name = aws_cloudwatch_log_group.cloudtrail_log_group.id
+
+  # The filter pattern is a valid CloudWatch Logs filter pattern for extracting metric data out of ingested log events
+  # $.eventName is a JSON selector that selects the value of the eventName field in the log event/
+  # $: is the root of the log event
+  # eventName: "RunInstances" is the key for the key-value pair we are looking for in the log event
+  pattern = "{ $.eventName = \"RunInstances\" }"
+
+  # Metric transformations are used to extract values from the log events and transform them into a CloudWatch metric
+  metric_transformation {
+    name      = "EC2InstanceCreations"
+    namespace = "Custom/EC2"
+    value     = "1" # The value to emit for the metric
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "ec2_terminate" {
+  name           = "EC2InstanceDeletions"
+  log_group_name = aws_cloudwatch_log_group.cloudtrail_log_group.id
+  pattern        = "{ $.eventName = \"TerminateInstances\" }"
+  # Metric transformations are used to extract values from the log events and transform them into a CloudWatch metric
+  metric_transformation {
+    name      = "EC2InstanceDeletions"
+    namespace = "Custom/EC2"
+    value     = "1" # The value to emit for the metric
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ec2_creation" {
+  alarm_name          = var.alarm_ec2_create_name
+  metric_name         = aws_cloudwatch_log_metric_filter.ec2_create.metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.ec2_create.metric_transformation[0].namespace
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 1
+
+  alarm_actions             = [var.sns_topic_s3_cloudwatch]
+  insufficient_data_actions = []
+  ok_actions                = []
+}
+
+resource "aws_cloudwatch_metric_alarm" "ec2_termination" {
+  alarm_name          = var.alarm_ec2_terminate_name
+  metric_name         = aws_cloudwatch_log_metric_filter.ec2_terminate.metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.ec2_terminate.metric_transformation[0].namespace
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 1
+
+  alarm_actions             = [var.sns_topic_s3_cloudwatch]
+  insufficient_data_actions = []
+  ok_actions                = []
+}
+
+# CPU Utilization Alarm for all EC2 instances
+
 resource "aws_cloudwatch_log_group" "cloudtrail_log_group" {
   name              = var.log_group_name
   retention_in_days = 30

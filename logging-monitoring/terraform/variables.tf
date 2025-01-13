@@ -49,7 +49,21 @@ variable "alarm_s3_put_request_name" {
 variable "alarm_s3_delete_request_name" {
   description = "The name of the CloudWatch alarm."
   type        = string
+}
 
+variable "alarm_ec2_create_name" {
+  description = "The name of the CloudWatch alarm."
+  type        = string
+}
+
+variable "alarm_ec2_terminate_name" {
+  description = "The name of the CloudWatch alarm."
+  type        = string
+}
+
+variable "alarm_ec2_cpu_utilization_name" {
+  description = "The name of the CloudWatch alarm."
+  type        = string
 }
 
 variable "iam_role_name" {
@@ -61,8 +75,21 @@ variable "iam_role_name" {
 variable "iam_role_policy_name" {
   description = "The name of the IAM role policy."
   type        = string
-
 }
+
+# ----------------
+# EC2 Instance
+# ----------------
+variable "ami_id" {
+  description = "The AMI ID for the EC2 instance."
+  type        = string
+}
+
+variable "instance_type" {
+  description = "The instance type for the EC2 instance."
+  type        = string
+}
+
 
 # ----------------
 # SNS Topic
