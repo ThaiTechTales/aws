@@ -5,5 +5,5 @@ output "bucket_name" {
 
 output "bucket_arn" {
   description = "ARN of the created S3 bucket"
-  value       = aws_s3_bucket.lambda_code_bucket.arn  
+  value       = aws_s3_bucket.lambda_code_bucket.arn
 }

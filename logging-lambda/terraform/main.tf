@@ -4,10 +4,10 @@ module "s3" {
 }
 
 module "iam" {
-  source = "./modules/iam"
-  lambda_role_name = var.lambda_role_name
+  source             = "./modules/iam"
+  lambda_role_name   = var.lambda_role_name
   lambda_policy_name = var.lambda_policy_name
-  s3_bucket_arn = module.s3.bucket_arn
+  s3_bucket_arn      = module.s3.bucket_arn
 }
 
 
@@ -18,7 +18,7 @@ module "lambda" {
   handler         = var.handler
   runtime         = var.runtime
   s3_bucket       = module.s3.bucket_name
-  s3_key          = var.s3_key  
+  s3_key          = var.s3_key
 }
 
 resource "aws_s3_bucket_notification" "lambda_trigger" {
@@ -43,5 +43,5 @@ resource "aws_lambda_permission" "allow_s3" {
 
 resource "aws_cloudwatch_log_group" "lambda_logs" {
   name              = "/aws/lambda/${module.lambda.lambda_function_name}"
-  retention_in_days = var.retention_in_days  
+  retention_in_days = var.retention_in_days
 }

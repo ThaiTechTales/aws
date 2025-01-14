@@ -6,7 +6,7 @@ variable "lambda_role_name" {
 variable "lambda_policy_name" {
   description = "Name of the IAM policy"
   type        = string
-  
+
 }
 
 variable "s3_bucket_arn" {
