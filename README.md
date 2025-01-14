@@ -14,4 +14,4 @@ This repository serves as a centralised hub for all AWS-related projects. The ai
 - **webapp:** Highly available web application infrastructure featuring a VPC, multi-AZ subnets, an EC2 instance with a web server, and an Application Load Balancer.
 - **logging-lambda:** Centralised logging in CloudWatch that has an S3-triggered Lambda function.
 - **notification-system:** Notification and messaging system using Simple Notification Service (SNS) and Simple Queue Service (SQS) integrated with Lambda
-- **lagging-monitoring:** Comprehensive logging and monitoring for AWS resources. It includes CloudTrail for tracking API activities and CloudWatch for performance metrics and event monitoring. Alerts are sent via Amazon SNS when alarms are triggered, ensuring real-time notifications for critical events.
+- **logging-monitoring:** Comprehensive logging and monitoring for AWS resources. It includes CloudTrail for tracking API activities and CloudWatch for performance metrics and event monitoring. Alerts are sent via Amazon SNS when alarms are triggered.
