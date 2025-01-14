@@ -20,12 +20,12 @@ variable "bucket_name" {
 
 variable "lambda_role_name" {
   description = "Name of the IAM role for the Lambda function"
-  type        = string  
+  type        = string
 }
 
 variable "lambda_policy_name" {
   description = "Name of the IAM policy for the Lambda function"
-  type        = string  
+  type        = string
 }
 
 variable "function_name" {
@@ -51,5 +51,5 @@ variable "s3_key" {
 variable "retention_in_days" {
   description = "Number of days to retain logs in CloudWatch Logs"
   type        = number
-  default     = 7  
+  default     = 7
 }
