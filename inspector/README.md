@@ -27,11 +27,21 @@ This project deploys a solution using AWS Inspector to scan and assess vulnerabi
 
 - **Inspector V2:** The newer version of AWS Inspector, which simplifies the setup process by eliminating the need for assessment targets. It provides broader coverage and improved integration with other AWS services.
 
+- **Duration In Amazon Inspector**
+  - In Inspector Classic, scans are ran on-demand or on a scheduled basis, and the duration of the scan (e.g., how long the assessment runs for) is specified.
+  - In Inspector v2, there is no need to define a scan duration. Instead:
+    - Scanning is continuous and automated.
+    - Inspector v2 continuously monitors EC2 instances and container images for vulnerabilities or misconfigurations as soon as they are created or updated.
+
 ## Workflow
 
 - AWS Inspector requires an **Assessment Target** to define the resources (e.g., EC2 instances) it will scan.
 - An **Assessment Template** specifies the type of rules and duration for the scans.
 - Auto Scaling Group instances must be dynamically included in the Inspector scans, which is managed using tags.
+
+The following diagram represents the workflow of this project.
+
+![Architecture Diagram](images/architecture-diagram/architecture-diagram.png)
 
 ## Requirements
 
@@ -43,17 +53,18 @@ This project deploys a solution using AWS Inspector to scan and assess vulnerabi
 
 1. Clone this repository.
 2. Edit `terraform.tfvars` with the desired AWS region and other variables.
-3. Initialise Terraform:
+3. Comment out either the `inspector_classic` or `inspector_v2` module in root's `main.tf` based on the desired version of Inspector.
+4. Initialise Terraform:
 
    ```bash
    terraform init
-4. terraform validate:
+5. terraform validate:
 
     ```bash
     terraform validate
     ```
 
-5. Plan and apply the configuration:
+6. Plan and apply the configuration:
 
     ```bash
     terraform plan
@@ -69,6 +80,13 @@ This project deploys a solution using AWS Inspector to scan and assess vulnerabi
 | Run Assessment    | `aws inspector start-assessment-run --assessment-template-arn <template-arn>` <br> or <br> Navigate to Inspector, Switch to Inspector Classic, Click on Assessment Runs, Click on Assessment template, select the desisred template and click on Run | Assessment run should start |
 | View Assessment Run | `aws inspector list-assessment-runs` <br> or <br> Navigate to Inspector, Switch to Inspector Classic, Click on Assessment Runs | Assessment run should be listed |
 | View Assessment Findings | `aws inspector list-findings --assessment-run-arn <assessment-run-arn>` <br> or <br> Navigate to Inspector, Switch to Inspector Classic, Click on Findings | Assessment findings should be listed |
+
+### Amazon Inspector (v2)
+
+| Step          | Command/Action | Expected Output  |
+| ------------- | -------------- | -----------------|
+| View Dashboard | Navigate to Inspector, Click on Dashboard | Inspector Dashboard should be displayed |
+| View Resources coverage's EC2 Instances | Navigate to Inspector, Click on Resources coverage's EC2 Instances | EC2 instances should be listed |
 
 ## Cleanup
 
@@ -98,7 +116,7 @@ The following screenshots below shows the provisioned EC2 instances
 
 ### Amazon Inspector (Classic)
 
-The following screenshots below shows the provisioned Amazon Inspector.
+The following screenshots below shows the provisioned Amazon Inspector (Classic).
 
 **Amazon Inspector**
 ![Inspector](images/inspector-classic/inspector-01.png)
@@ -130,3 +148,19 @@ The following screenshots below shows the provisioned Amazon Inspector.
 
 **Amazon Inspector (Classic) - Assessment Findings**
 ![Inspector](images/inspector-classic/inspector-11.png)
+
+### Amazon Inspector (V2)
+
+The following screenshots below shows the provisioned Amazon Inspector (v2).
+
+**Amazon Inspector (v2) - Dashboard**
+![Inspector](images/inspector-v2/inspector-v2-01.png)
+
+**Amazon Inspector (v2) - Account Management**
+![Inspector](images/inspector-v2/inspector-v2-02.png)
+
+**Amazon Inspector (v2) - Account Management - All EC2 Instances**
+![Inspector](images/inspector-v2/inspector-v2-03.png)
+
+**Amazon Inspector (v2) - Account Management - Scanning EC2 Instances**
+![Inspector](images/inspector-v2/inspector-v2-04.png)
