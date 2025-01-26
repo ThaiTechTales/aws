@@ -52,23 +52,78 @@ The following diagram represents the workflow of this project.
 ## Usage
 
 1. Clone this repository.
-2. Edit `terraform.tfvars` with the desired AWS region and other variables.
-3. Comment out either the `inspector-classic` or `inspector-v2` module in root's `main.tf` based on the desired version of Inspector.
-4. Initialise Terraform:
+
+### Terraform
+
+1. Edit `terraform.tfvars` with the desired AWS region and other variables.
+2. Comment out either the `inspector-classic` or `inspector-v2` module in root's `main.tf` based on the desired version of Inspector.
+3. Initialise Terraform:
 
    ```bash
    terraform init
-5. terraform validate:
+4. terraform validate:
 
     ```bash
     terraform validate
     ```
 
-6. Plan and apply the configuration:
+5. Plan and apply the configuration:
 
     ```bash
     terraform plan
     terraform apply
+    ```
+
+### CloudFormation
+
+1. Validate the CloudFormation template:
+
+    ```bash
+    # Auto Scaling Group
+    aws cloudformation validate-template --template-body file://asg/asg.yaml
+
+    # EC2
+    aws cloudformation validate-template --template-body file://ec2/ec2.yaml
+
+    # Inspector (Classic)
+    aws cloudformation validate-template --template-body file://inspector-classic/inspector-classic.yaml
+
+    # Inspector (v2)
+    aws cloudformation validate-template --template-body file://inspector-v2/inspector-v2.yaml
+    ```
+
+2. Create the CloudFormation stack:
+
+    ```bash
+    # Auto Scaling Group
+    aws cloudformation create-stack \
+    --stack-name asg-01 \
+    --template-body file://asg/asg.yaml \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --region ap-southeast-2
+    
+    # EC2
+    aws cloudformation create-stack \
+    --stack-name standalone-ec2-01 \
+    --template-body file://ec2/ec2.yaml \
+    --parameters \
+        ParameterKey=AMIId,ParameterValue=ami-00c97da679c04f4a0 \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --region ap-southeast-2
+
+    # Inspector (Classic)
+    aws cloudformation create-stack \
+    --stack-name inspector-classic-01 \
+    --template-body file://inspector-classic/inspector-classic.yaml \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --region ap-southeast-2
+
+    # Inspector (v2)
+    aws cloudformation create-stack \
+    --stack-name inspector-v2-01 \
+    --template-body file://inspector-v2/inspector-v2.yaml \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --region ap-southeast-2
     ```
 
 ## Testing

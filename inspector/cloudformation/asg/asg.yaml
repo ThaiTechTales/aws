@@ -1,0 +1,134 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  AMIId:
+    Type: String
+    Description: AMI ID for instances
+
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    Description: Instance type for the instances
+
+  SubnetIds:
+    Type: CommaDelimitedList
+    Description: Subnet IDs for the Auto Scaling group
+
+  DesiredCapacity:
+    Type: Number
+    Default: 2
+    Description: Desired capacity of the ASG
+
+  MinSize:
+    Type: Number
+    Default: 1
+    Description: Minimum size of the ASG
+
+  MaxSize:
+    Type: Number
+    Default: 3
+    Description: Maximum size of the ASG
+
+  Name:
+    Type: String
+    Description: Name tag for instances
+
+  Environment:
+    Type: String
+    Description: Environment tag for instances
+
+  RoleName:
+    Type: String
+    Default: instance-role-dev-asg
+    Description: IAM Role Name
+
+Resources:
+  ASGLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub "${Environment}-${Name}-launch-template"
+      LaunchTemplateData:
+        ImageId: !Ref AMIId
+        InstanceType: !Ref InstanceType
+        IamInstanceProfile:
+          Name: !Ref ASGInstanceProfile
+        UserData:
+          Fn::Base64: !Sub |
+            #!/bin/bash
+            yum install -y amazon-ssm-agent # Install SSM agent
+            yum update -y                   # Update the OS
+
+            systemctl start amazon-ssm-agent  # Start SSM agent
+            systemctl enable amazon-ssm-agent # Enable SSM agent to start on boot
+
+            # Install the Amazon Inspector agent
+            wget https://inspector-agent.amazonaws.com/linux/latest/install # Download the installation script
+            sudo bash install # Run the installation script
+
+            # Start the Amazon Inspector agent
+            sudo /etc/init.d/awsagent start
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: Name
+                Value: !Ref Name
+              - Key: Environment
+                Value: !Ref Environment
+              - Key: Role
+                Value: autoscaling
+
+  ASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier: !Ref SubnetIds
+      LaunchTemplate:
+        LaunchTemplateId: !Ref ASGLaunchTemplate
+        Version: "$Latest"
+      DesiredCapacity: !Ref DesiredCapacity
+      MinSize: !Ref MinSize
+      MaxSize: !Ref MaxSize
+      Tags:
+        - Key: Name
+          Value: !Ref Name
+          PropagateAtLaunch: true
+        - Key: Environment
+          Value: !Ref Environment
+          PropagateAtLaunch: true
+        - Key: Role
+          Value: autoscaling
+          PropagateAtLaunch: true
+
+  ASGInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: instance-profile-dev-asg-01
+      Roles:
+        - !Ref ASGInstanceRole
+
+  ASGInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+
+  ASGSSMPolicyAttachment:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Roles: 
+        - !Ref ASGInstanceRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  ASGInspectorPolicyAttachment:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Roles: 
+        - !Ref ASGInstanceRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonInspectorFullAccess
