@@ -13,6 +13,7 @@ resource "aws_instance" "ec2_with_tags" {
   user_data = file("${path.module}/user_data.sh")
 }
 
+# To demonstrate the difference between EC2 with and without tags and how without tags won't be included in Inspector assessment because of the tag filter
 resource "aws_instance" "ec2_without_tags" {
   count         = 2
   ami           = var.ami_id
