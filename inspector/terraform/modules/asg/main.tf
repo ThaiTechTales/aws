@@ -17,7 +17,8 @@ resource "aws_launch_template" "this" {
     }
   }
 
-  user_data = file("${path.module}/../ec2/user_data.sh")
+  # base64encode: Encode the user data to base64
+  user_data = base64encode(file("${path.module}/../ec2/user_data.sh"))
 }
 
 resource "aws_autoscaling_group" "this" {

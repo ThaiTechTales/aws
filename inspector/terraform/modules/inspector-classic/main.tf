@@ -1,18 +1,26 @@
+locals {
+  roles = ["standalone", "autoscaling"]
+}
+
 resource "aws_inspector_resource_group" "this" {
+  for_each = toset(local.roles)
   tags = {
-    Environment = "dev"
+    Role = each.key
   }
 }
 
 resource "aws_inspector_assessment_target" "this" {
-  name                = "ec2-assessment-target"
-  resource_group_arn  = aws_inspector_resource_group.this.arn
+  for_each = aws_inspector_resource_group.this  
+  name = "${var.assessment_target_name}-${each.key}-01"
+  resource_group_arn = each.value.arn
 }
 
 resource "aws_inspector_assessment_template" "this" {
-  name               = "ec2-assessment-template"
-  target_arn         = aws_inspector_assessment_target.this.arn 
-  duration           = var.duration # The duration of the assessment run in seconds
+  for_each = aws_inspector_assessment_target.this
+  name = "${var.assessment_template_name}-${each.key}-01"
+
+  target_arn = each.value.arn
+  duration   = var.duration # The duration of the assessment run in seconds
 
   # Use the rules packages for Common Vulnerabilities and Exposures (CVE) and Center for Internet Security (CIS) benchmarks
   # https://docs.aws.amazon.com/inspector/latest/userguide/inspector_rules-arns.html
