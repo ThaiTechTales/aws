@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project deploys a solution using AWS Inspector to scan and assess vulnerabilities for both standalone EC2 instances and EC2 instances deployed through an Auto Scaling Group (ASG). AWS Inspector is a security assessment service that helps identify vulnerabilities and deviations from security best practices. It demonstrates both the Classic and the v2 versions of AWS Inspector for the assessment.
+This project deploys a solution using AWS Inspector to scan and assess vulnerabilities for both standalone EC2 instances and those deployed through an Auto Scaling Group (ASG). AWS Inspector is a security assessment service that helps identify vulnerabilities and deviations from security best practices. This project demonstrates the use of both the Classic and v2 versions of AWS Inspector for assessments.
 
 ## Technologies Used
 
@@ -39,7 +39,6 @@ This project deploys a solution using AWS Inspector to scan and assess vulnerabi
 - AWS CLI
 - AWS credentials configured.
 
-
 ## Usage
 
 1. Clone this repository.
@@ -62,3 +61,72 @@ This project deploys a solution using AWS Inspector to scan and assess vulnerabi
     ```
 
 ## Testing
+
+### Amazon Inspector (Classic)
+
+| Step          | Command/Action | Expected Output  |
+| ------------- | -------------- | -----------------|
+| Run Assessment    | `aws inspector start-assessment-run --assessment-template-arn <template-arn>` <br> or <br> Navigate to Inspector, Switch to Inspector Classic, Click on Assessment Runs, Click on Assessment template, select the desisred template and click on Run | Assessment run should start |
+| View Assessment Run | `aws inspector list-assessment-runs` <br> or <br> Navigate to Inspector, Switch to Inspector Classic, Click on Assessment Runs | Assessment run should be listed |
+| View Assessment Findings | `aws inspector list-findings --assessment-run-arn <assessment-run-arn>` <br> or <br> Navigate to Inspector, Switch to Inspector Classic, Click on Findings | Assessment findings should be listed |
+
+## Cleanup
+
+1. Stop Assessment Run
+
+    ```bash
+    aws inspector stop-assessment-run --assessment-run-arn <assessment-run-arn>
+    ```
+
+    or
+
+    Navigate to Inspector, Switch to Inspector Classic, Click on Assessment Runs, Click on the assessment run, and click on Stop.
+
+2. Destroy resources
+
+    ```bash
+    terraform destroy
+    ```
+
+## Screenshots
+
+### EC2
+
+The following screenshots below shows the provisioned EC2 instances
+
+![EC2](images/ec2/ec2-01.png)
+
+### Amazon Inspector (Classic)
+
+The following screenshots below shows the provisioned Amazon Inspector.
+
+**Amazon Inspector**
+![Inspector](images/inspector-classic/inspector-01.png)
+
+**Amazon Inspector Classic**
+![Inspector](images/inspector-classic/inspector-02.png)
+
+**Amazon Inspector Dashboard**
+![Inspector](images/inspector-classic/inspector-03.png)
+
+**Amazon Inspector (Classic) - Assessment Targets**
+![Inspector](images/inspector-classic/inspector-04.png)
+
+**Amazon Inspector (Classic) - Preview Targets**
+![Inspector](images/inspector-classic/inspector-05.png)
+
+**Amazon Inspector (Classic) - Assessment Templates**
+![Inspector](images/inspector-classic/inspector-06.png)
+
+**Amazon Inspector (Classic) - Run Assessment Templates**
+![Inspector](images/inspector-classic/inspector-07.png)
+
+**Amazon Inspector (Classic) - Running Assessment Templates**
+![Inspector](images/inspector-classic/inspector-08.png)
+
+**Amazon Inspector (Classic) - Completed Assessment Run**
+![Inspector](images/inspector-classic/inspector-09.png)
+![Inspector](images/inspector-classic/inspector-10.png)
+
+**Amazon Inspector (Classic) - Assessment Findings**
+![Inspector](images/inspector-classic/inspector-11.png)

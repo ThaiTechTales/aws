@@ -1,3 +1,4 @@
-output "assessment_template_ids" {  
-  value = [for template in aws_inspector_assessment_template.this : template.id]
+output "inspector_ec2_status" {
+  description = "Inspector EC2 scanning status"
+  value       = aws_inspector2_enabler.ec2.status
 }

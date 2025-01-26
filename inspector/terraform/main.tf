@@ -1,9 +1,6 @@
-module "inspector-v2" {
-  source                   = "./modules/inspector-v2"
-  duration                 = var.duration
-  assessment_target_name   = var.assessment_target_name
-  assessment_template_name = var.assessment_template_name  
-}
+# module "inspector-v2" {
+#   source = "./modules/inspector-v2"
+# }
 
 module "inspector-classic" {
   source                   = "./modules/inspector-classic"
