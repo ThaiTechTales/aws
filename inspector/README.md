@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project deploys a solution using AWS Inspector to scan and assess vulnerabilities for both standalone EC2 instances and those deployed through an Auto Scaling Group (ASG). AWS Inspector is a security assessment service that helps identify vulnerabilities and deviations from security best practices. This project demonstrates the use of both the Classic and v2 versions of AWS Inspector for assessments.
+This project demonstrates the use of both the Classic and v2 versions of AWS Inspector for assessments to deploy AWS Inspector to scan and assess vulnerabilities for both standalone EC2 instances and those deployed through an Auto Scaling Group (ASG). AWS Inspector is a security assessment service that helps identify vulnerabilities and deviations from security best practices.
 
 ## Technologies Used
 
@@ -149,7 +149,7 @@ The following screenshots below shows the provisioned Amazon Inspector (Classic)
 **Amazon Inspector (Classic) - Assessment Findings**
 ![Inspector](images/inspector-classic/inspector-11.png)
 
-### Amazon Inspector (V2)
+### Amazon Inspector (v2)
 
 The following screenshots below shows the provisioned Amazon Inspector (v2).
 
