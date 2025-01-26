@@ -9,7 +9,12 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "name" {
+variable "ec2_with_tags_name" {
+  description = "EC2 instance name"
+  type        = string
+}
+
+variable "ec2_without_tags_name" {
   description = "EC2 instance name"
   type        = string
 }

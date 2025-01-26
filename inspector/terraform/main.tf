@@ -1,15 +1,22 @@
-module "inspector" {
-  source   = "./modules/inspector"
-  duration = var.duration
+module "inspector-v2" {
+  source = "./modules/inspector-v2"
 }
 
+# module "inspector-classic" {
+#   source                   = "./modules/inspector-classic"
+#   duration                 = var.duration
+#   assessment_target_name   = var.assessment_target_name
+#   assessment_template_name = var.assessment_template_name
+# }
+
 module "ec2" {
-  source        = "./modules/ec2"
-  ami_id        = var.ami_id
-  instance_type = var.instance_type
-  name          = var.standalone-ec2-name
-  environment   = var.environment
-  role_name     = var.standalone_ec2_role_name
+  source                = "./modules/ec2"
+  ami_id                = var.ami_id
+  ec2_with_tags_name    = var.standalone-ec2_with_tags_name
+  ec2_without_tags_name = var.standalone-ec2_without_tags_name
+  instance_type         = var.instance_type
+  environment           = var.environment
+  role_name             = var.standalone_ec2_role_name
 }
 
 module "asg" {

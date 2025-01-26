@@ -14,6 +14,16 @@ variable "duration" {
   type        = number
 }
 
+variable "assessment_target_name" {
+  description = "The name of the inspector target."
+  type        = string
+}
+
+variable "assessment_template_name" {
+  description = "The name of the inspector assessment."
+  type        = string
+}
+
 # ----------------
 # Module: ec2 & asg
 # ----------------
@@ -35,9 +45,16 @@ variable "environment" {
 # ----------------
 # Module: ec2
 # ----------------
-variable "standalone-ec2-name" {
+
+variable "standalone-ec2_with_tags_name" {
   description = "The name of the EC2 instance."
   type        = string
+}
+
+variable "standalone-ec2_without_tags_name" {
+  description = "The name of the EC2 instance."
+  type        = string
+
 }
 
 variable "standalone_ec2_role_name" {

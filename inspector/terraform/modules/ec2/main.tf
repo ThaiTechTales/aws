@@ -1,13 +1,27 @@
-resource "aws_instance" "this" {
+resource "aws_instance" "ec2_with_tags" {
   count         = 2
   ami           = var.ami_id
   instance_type = var.instance_type
   iam_instance_profile = aws_iam_instance_profile.this.name
 
   tags = {
-    Name = var.name
+    Name = var.ec2_with_tags_name
     Environment = var.environment
     Role = "standalone"
+  }
+
+  user_data = file("${path.module}/user_data.sh")
+}
+
+# To demonstrate the difference between EC2 with and without tags and how without tags won't be included in Inspector assessment because of the tag filter
+resource "aws_instance" "ec2_without_tags" {
+  count         = 2
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  iam_instance_profile = aws_iam_instance_profile.this.name
+
+  tags = {
+    Name = var.ec2_without_tags_name    
   }
 
   user_data = file("${path.module}/user_data.sh")
