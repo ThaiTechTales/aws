@@ -25,7 +25,7 @@ This project demonstrates the use of both the Classic and v2 versions of AWS Ins
 
 - **Inspector Classic:** The original version of AWS Inspector, which requires the creation of assessment targets and templates. It supports a limited set of operating systems and regions. For more details of supported os, refer to the [Inspector Classic documentation](https://docs.aws.amazon.com/inspector/v1/userguide/inspector_supported_os_regions.html).
 
-- **Inspector V2:** The newer version of AWS Inspector, which simplifies the setup process by eliminating the need for assessment targets. It provides broader coverage and improved integration with other AWS services.
+- **Inspector v2:** The newer version of AWS Inspector, which simplifies the setup process by eliminating the need for assessment targets. It provides broader coverage and improved integration with other AWS services.
 
 - **Duration In Amazon Inspector**
   - In Inspector Classic, scans are ran on-demand or on a scheduled basis, and the duration of the scan (e.g., how long the assessment runs for) is specified.
@@ -53,7 +53,7 @@ The following diagram represents the workflow of this project.
 
 1. Clone this repository.
 2. Edit `terraform.tfvars` with the desired AWS region and other variables.
-3. Comment out either the `inspector_classic` or `inspector_v2` module in root's `main.tf` based on the desired version of Inspector.
+3. Comment out either the `inspector-classic` or `inspector-v2` module in root's `main.tf` based on the desired version of Inspector.
 4. Initialise Terraform:
 
    ```bash
@@ -154,13 +154,13 @@ The following screenshots below shows the provisioned Amazon Inspector (Classic)
 The following screenshots below shows the provisioned Amazon Inspector (v2).
 
 **Amazon Inspector (v2) - Dashboard**
-![Inspector](images/inspector-v2/inspector-v2-01.png)
+![Inspector](images/inspector_v2/inspector-v2-01.png)
 
 **Amazon Inspector (v2) - Account Management**
-![Inspector](images/inspector-v2/inspector-v2-02.png)
+![Inspector](images/inspector_v2/inspector-v2-02.png)
 
 **Amazon Inspector (v2) - Account Management - All EC2 Instances**
-![Inspector](images/inspector-v2/inspector-v2-03.png)
+![Inspector](images/inspector_v2/inspector-v2-03.png)
 
 **Amazon Inspector (v2) - Account Management - Scanning EC2 Instances**
-![Inspector](images/inspector-v2/inspector-v2-04.png)
+![Inspector](images/inspector_v2/inspector-v2-04.png)
