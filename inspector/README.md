@@ -1,4 +1,4 @@
-# AWS Project
+# Amazon Inspector
 
 ## Project Overview
 
