@@ -1,0 +1,4 @@
+# To enable AWS Inspector V2 for EC2 instances, use the AWS Management Console, AWS CLI, or SDKs, as there is no direct CloudFormation support for enabling Inspector V2.
+
+# aws inspector2 enable --resource-types EC2
+# aws inspector2 disable --resource-types EC2

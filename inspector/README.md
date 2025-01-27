@@ -119,11 +119,7 @@ The following diagram represents the workflow of this project.
     --region ap-southeast-2
 
     # Inspector (v2)
-    aws cloudformation create-stack \
-    --stack-name inspector-v2-01 \
-    --template-body file://inspector-v2/inspector-v2.yaml \
-    --capabilities CAPABILITY_NAMED_IAM \
-    --region ap-southeast-2
+    aws inspector2 enable --resource-types EC2
     ```
 
 ## Testing
@@ -145,6 +141,8 @@ The following diagram represents the workflow of this project.
 
 ## Cleanup
 
+### Terraform
+
 1. Stop Assessment Run
 
     ```bash
@@ -159,6 +157,27 @@ The following diagram represents the workflow of this project.
 
     ```bash
     terraform destroy
+    ```
+
+### CloudFormation
+
+1. Delete the CloudFormation stacks:
+
+    ```bash
+    # Auto Scaling Group
+    aws cloudformation delete-stack --stack-name asg-01
+
+    # EC2
+    aws cloudformation delete-stack --stack-name standalone-ec2-01
+
+    # Inspector (Classic)
+    aws cloudformation delete-stack --stack-name inspector-classic-01
+    ```
+
+2. Disable Inspector v2:
+
+    ```bash
+    aws inspector2 disable --resource-types EC2
     ```
 
 ## Screenshots
