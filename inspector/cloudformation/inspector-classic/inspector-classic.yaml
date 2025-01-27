@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  AssessmentTargetName:
+    Type: String
+    Default: inspector-target-dev-apse2
+    Description: Name for the assessment target
+
+  AssessmentTemplateName:
+    Type: String
+    Default: inspector-template-dev-apse2
+    Description: Name for the assessment template
+
+  Duration:
+    Type: Number
+    # Default: 3600 # 1 hour
+    Default: 60 # 1 minute
+    Description: Duration of the assessment in seconds
+
+Mappings:
+    AssessmentTags:
+      Standalone:
+        Key: Role
+        Value: standalone
+      Autoscaling:
+        Key: Role
+        Value: autoscaling
+
+Resources:
+  InspectorResourceGroupStandalone:
+    Type: AWS::Inspector::ResourceGroup
+    Properties:
+      ResourceGroupTags:
+        - Key: !FindInMap [AssessmentTags, Standalone, Key]
+          Value: !FindInMap [AssessmentTags, Standalone, Value]
+
+  InspectorResourceGroupAutoscaling:
+    Type: AWS::Inspector::ResourceGroup
+    Properties:
+      ResourceGroupTags:
+        - Key: !FindInMap [AssessmentTags, Autoscaling, Key]
+          Value: !FindInMap [AssessmentTags, Autoscaling, Value]
+
+  InspectorAssessmentTargetStandalone:
+    Type: AWS::Inspector::AssessmentTarget
+    Properties:
+      AssessmentTargetName: !Sub "${AssessmentTargetName}-standalone-01"
+      ResourceGroupArn: !Ref InspectorResourceGroupStandalone
+
+  InspectorAssessmentTargetAutoscaling:
+    Type: AWS::Inspector::AssessmentTarget
+    Properties:
+      AssessmentTargetName: !Sub "${AssessmentTargetName}-autoscaling-01"
+      ResourceGroupArn: !Ref InspectorResourceGroupAutoscaling
+
+  InspectorAssessmentTemplateStandalone:
+    Type: AWS::Inspector::AssessmentTemplate
+    Properties:
+      AssessmentTemplateName: !Sub "${AssessmentTemplateName}-standalone-01"
+      DurationInSeconds: !Ref Duration
+      AssessmentTargetArn: !Ref InspectorAssessmentTargetStandalone
+      RulesPackageArns:
+        - "arn:aws:inspector:ap-southeast-2:454640832652:rulespackage/0-D5TGAxiR"
+        - "arn:aws:inspector:ap-southeast-2:454640832652:rulespackage/0-Vkd2Vxjq"
+
+  InspectorAssessmentTemplateAutoscaling:
+    Type: AWS::Inspector::AssessmentTemplate
+    Properties:
+      AssessmentTemplateName: !Sub "${AssessmentTemplateName}-autoscaling-01"
+      DurationInSeconds: !Ref Duration
+      AssessmentTargetArn: !Ref InspectorAssessmentTargetAutoscaling
+      RulesPackageArns:
+        - "arn:aws:inspector:ap-southeast-2:454640832652:rulespackage/0-D5TGAxiR"
+        - "arn:aws:inspector:ap-southeast-2:454640832652:rulespackage/0-Vkd2Vxjq"

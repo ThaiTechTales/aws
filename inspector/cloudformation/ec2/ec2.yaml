@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  AMIId:
+    Type: String
+    Default: ami-00c97da679c04f4a0
+    Description: AMI ID for instances
+
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    Description: Instance type for the instances
+
+  EC2WithTagsName:
+    Type: String
+    Default: ec2-dev-apse2-standalone-ec2-tags-01
+    Description: Name tag for EC2 instances with tags
+
+  EC2WithoutTagsName:
+    Type: String
+    Default: ec2-dev-apse2-standalone-ec2-without-tags-01
+    Description: Name tag for EC2 instances without tags
+
+  Environment:
+    Type: String
+    Default: dev
+    Description: Environment tag for instances
+
+  RoleName:
+    Type: String
+    Default: role-dev-apse2-standalone-ec2-01
+    Description: IAM Role Name
+
+Resources:
+  EC2WithTags:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AMIId
+      InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      Tags:
+        - Key: Name
+          Value: !Ref EC2WithTagsName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Role
+          Value: standalone
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum install -y amazon-ssm-agent # Install SSM agent
+          yum update -y                   # Update the OS
+
+          systemctl start amazon-ssm-agent  # Start SSM agent
+          systemctl enable amazon-ssm-agent # Enable SSM agent to start on boot
+
+          # Install the Amazon Inspector agent
+          wget https://inspector-agent.amazonaws.com/linux/latest/install # Download the installation script
+          sudo bash install # Run the installation script
+
+          # Start the Amazon Inspector agent
+          sudo /etc/init.d/awsagent start
+
+  EC2WithoutTags:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AMIId
+      InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      Tags:
+        - Key: Name
+          Value: !Ref EC2WithoutTagsName
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum install -y amazon-ssm-agent # Install SSM agent
+          yum update -y                   # Update the OS
+
+          systemctl start amazon-ssm-agent  # Start SSM agent
+          systemctl enable amazon-ssm-agent # Enable SSM agent to start on boot
+
+          # Install the Amazon Inspector agent
+          wget https://inspector-agent.amazonaws.com/linux/latest/install # Download the installation script
+          sudo bash install # Run the installation script
+
+          # Start the Amazon Inspector agent
+          sudo /etc/init.d/awsagent start
+
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: instance-profile-dev-ec2-01
+      Roles:
+        - !Ref EC2InstanceRole
+
+  EC2InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+          - arn:aws:iam::aws:policy/AmazonInspectorFullAccess
