@@ -176,10 +176,10 @@ The following screenshots below shows the provisioned Amazon Inspector (Classic)
 **Amazon Inspector**
 ![Inspector](images/inspector-classic/inspector-01.png)
 
-**Amazon Inspector Classic**
+**Amazon Inspector (Classic)**
 ![Inspector](images/inspector-classic/inspector-02.png)
 
-**Amazon Inspector Dashboard**
+**Amazon Inspector (Classic) Dashboard**
 ![Inspector](images/inspector-classic/inspector-03.png)
 
 **Amazon Inspector (Classic) - Assessment Targets**

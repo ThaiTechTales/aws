@@ -3,6 +3,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   AMIId:
     Type: String
+    Default: ami-00c97da679c04f4a0
     Description: AMI ID for instances
 
   InstanceType:
@@ -12,6 +13,7 @@ Parameters:
 
   SubnetIds:
     Type: CommaDelimitedList
+    Default: "subnet-0701f34b16a7160c0,subnet-001cd48fb525b1981,subnet-033c427ceeba293e3"
     Description: Subnet IDs for the Auto Scaling group
 
   DesiredCapacity:
@@ -31,15 +33,17 @@ Parameters:
 
   Name:
     Type: String
+    Default: ec2-dev-apse2-asg-ec2-01
     Description: Name tag for instances
 
   Environment:
     Type: String
+    Default: dev
     Description: Environment tag for instances
 
   RoleName:
     Type: String
-    Default: instance-role-dev-asg
+    Default: role-dev-apse2-asg-ec2-01
     Description: IAM Role Name
 
 Resources:
@@ -83,7 +87,7 @@ Resources:
       VPCZoneIdentifier: !Ref SubnetIds
       LaunchTemplate:
         LaunchTemplateId: !Ref ASGLaunchTemplate
-        Version: "$Latest"
+        Version: !GetAtt ASGLaunchTemplate.LatestVersionNumber
       DesiredCapacity: !Ref DesiredCapacity
       MinSize: !Ref MinSize
       MaxSize: !Ref MaxSize
@@ -116,19 +120,6 @@ Resources:
             Principal:
               Service: ec2.amazonaws.com
             Action: sts:AssumeRole
-
-  ASGSSMPolicyAttachment:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      Roles: 
-        - !Ref ASGInstanceRole
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-
-  ASGInspectorPolicyAttachment:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      Roles: 
-        - !Ref ASGInstanceRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonInspectorFullAccess
+          - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+          - arn:aws:iam::aws:policy/AmazonInspectorFullAccess
