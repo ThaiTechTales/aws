@@ -60,18 +60,17 @@ This project focuses on mastering AWS Identity and Access Management (IAM) by pr
 ### Terraform
 
 1. Edit `terraform.tfvars` with the desired AWS region and other variables.
-2. Comment out either the `inspector-classic` or `inspector-v2` module in root's `main.tf` based on the desired version of Inspector.
-3. Initialise Terraform:
+2. Initialise Terraform:
 
    ```bash
    terraform init
-4. terraform validate:
+3. terraform validate:
 
     ```bash
     terraform validate
     ```
 
-5. Plan and apply the configuration:
+4. Plan and apply the configuration:
 
     ```bash
     terraform plan
