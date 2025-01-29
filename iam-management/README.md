@@ -165,10 +165,10 @@ This project focuses on mastering AWS Identity and Access Management (IAM) by pr
 
 ![IAM](images/iam/iam-user-01.png)
 
-### IAM Policy
-
-![IAM](images/iam/iam-policy-01.png)
-
 ### IAM Role
 
 ![IAM](images/iam/iam-role-01.png)
+
+### IAM Policy
+
+![IAM](images/iam/iam-policy-01.png)
