@@ -15,7 +15,7 @@ This project demonstrates the use of both the Classic and v2 versions of AWS Ins
 
 ## Key Terms
 
-- **AWS Inspector:** A tool to identify vulnerabilities in EC2 instances.
+- **AWS Inspector:** A tool to identify vulnerabilities in EC2 instances, containers, and lambda functions.
 - **Assessment Target:** A collection of resources to be assessed by AWS Inspector.
 - **Assessment Template:** Defines the rules package and duration for assessments.
 - **Auto Scaling Group:** A group of EC2 instances that scales based on demand.
@@ -23,11 +23,13 @@ This project demonstrates the use of both the Classic and v2 versions of AWS Ins
 
 ## Key Concepts
 
+- **Inspector** Focuses on vulnerability scanning and configuration checks. It helps harden environments by identifying vulnerabilities and misconfigurations before they are exploited.
+
 - **Inspector Classic:** The original version of AWS Inspector, which requires the creation of assessment targets and templates. It supports a limited set of operating systems and regions. For more details of supported os, refer to the [Inspector Classic documentation](https://docs.aws.amazon.com/inspector/v1/userguide/inspector_supported_os_regions.html).
 
 - **Inspector v2:** The newer version of AWS Inspector, which simplifies the setup process by eliminating the need for assessment targets. It provides broader coverage and improved integration with other AWS services.
 
-- **Duration In Amazon Inspector**
+- **Duration: Amazon Inspector Classic vs Amazon Inspector v2:**
   - In Inspector Classic, scans are ran on-demand or on a scheduled basis, and the duration of the scan (e.g., how long the assessment runs for) is specified.
   - In Inspector v2, there is no need to define a scan duration. Instead:
     - Scanning is continuous and automated.
@@ -87,9 +89,6 @@ The following diagram represents the workflow of this project.
 
     # Inspector (Classic)
     aws cloudformation validate-template --template-body file://inspector-classic/inspector-classic.yaml
-
-    # Inspector (v2)
-    aws cloudformation validate-template --template-body file://inspector-v2/inspector-v2.yaml
     ```
 
 2. Create the CloudFormation stack:
