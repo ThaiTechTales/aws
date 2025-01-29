@@ -1,4 +1,4 @@
-variable "policies" {
+variable "policy_names" {
   type = map(string)
 }
 

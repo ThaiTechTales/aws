@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "this" {
-  for_each = var.policies
+  for_each = var.policy_names
   name     = each.key
   policy = jsonencode({
     Version = "2012-10-17"
