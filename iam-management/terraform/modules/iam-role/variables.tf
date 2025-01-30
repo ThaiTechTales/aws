@@ -5,3 +5,7 @@ variable "role_names" {
 variable "tags" {
   type = map(string)
 }
+
+variable "role_with_aws_managed_policy_name" {
+  type = string
+}

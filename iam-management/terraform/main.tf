@@ -10,13 +10,15 @@ module "iam_users" {
 }
 
 module "iam_roles" {
-  source     = "./modules/iam-role"
-  role_names = var.role_names
-  tags       = var.tags
+  source                            = "./modules/iam-role"
+  role_names                        = var.role_names
+  role_with_aws_managed_policy_name = var.role_with_aws_managed_policy_name
+  tags                              = var.tags
 }
 
 module "iam_policies" {
-  source       = "./modules/iam-policy"
-  policy_names = var.policy_names
-  tags         = var.tags
+  source                       = "./modules/iam-policy"
+  policy_names                 = var.policy_names
+  tags                         = var.tags
+  role_with_aws_managed_policy = module.iam_roles.role_with_aws_managed_policy_arn
 }

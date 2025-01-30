@@ -13,3 +13,8 @@ resource "aws_iam_policy" "this" {
   })
   tags = var.tags
 }
+
+resource "aws_iam_role_policy_attachment" "s3_read_only_access" {
+  role       = var.role_with_aws_managed_policy
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
