@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository serves as a centralised hub for all AWS-related projects. The aim is to explore and implement various AWS services and solutions, showcasing practical knowledge of cloud architecture, infrastructure management, and automation.
+This repository serves as a centralised hub for all AWS-related projects. The aim is to explore and implement various AWS services and solutions, showcasing practical knowledge of cloud architecture, infrastructure management, and cloud-native application development.
 
 ## Intention
 
