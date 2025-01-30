@@ -6,7 +6,7 @@ This repository serves as a centralised hub for all AWS-related projects. The ai
 
 ## Intention
 
-- To consolidate AWS projects that demonstrate skills in Infrastructure as Code (IaC), cloud-native application development, and cost-efficient cloud solutions.
+- To consolidate AWS projects that demonstrate skills in Infrastructure as Code (IaC), cloud-native application development.
 - To create a portfolio of projects that highlight proficiency in AWS.
 
 ## Projects
