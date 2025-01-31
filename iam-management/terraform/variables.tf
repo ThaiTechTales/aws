@@ -40,6 +40,6 @@ variable "role_with_aws_managed_policy_name" {
 # ----------------
 # IAM Policy
 # ----------------
-variable "policy_names" {
-  type = map(string)
+variable "policy_name" {
+  type = string
 }

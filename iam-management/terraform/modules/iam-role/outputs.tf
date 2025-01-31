@@ -3,5 +3,5 @@ output "role_arns" {
 }
 
 output "role_with_aws_managed_policy_arn" {
-  value = aws_iam_role.role_with_aws_managed_policy.arn
+  value = aws_iam_role.role_with_aws_managed_policy.id
 }

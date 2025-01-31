@@ -1,5 +1,5 @@
-variable "policy_names" {
-  type = map(string)
+variable "policy_name" {
+  type = string
 }
 
 variable "tags" {

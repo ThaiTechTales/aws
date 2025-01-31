@@ -18,7 +18,7 @@ module "iam_roles" {
 
 module "iam_policies" {
   source                       = "./modules/iam-policy"
-  policy_names                 = var.policy_names
+  policy_name                  = var.policy_name
   tags                         = var.tags
   role_with_aws_managed_policy = module.iam_roles.role_with_aws_managed_policy_arn
 }
