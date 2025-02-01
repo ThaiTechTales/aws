@@ -6,6 +6,7 @@ module "iam_groups" {
 module "iam_users" {
   source     = "./modules/iam-user"
   user_names = var.iam_user_names
+  groups     = module.iam_groups.group_names
   tags       = var.tags
 }
 

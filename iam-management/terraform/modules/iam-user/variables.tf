@@ -5,3 +5,7 @@ variable "user_names" {
 variable "tags" {
   type = map(string)
 }
+
+variable "groups" {
+  type = list(string)
+}
