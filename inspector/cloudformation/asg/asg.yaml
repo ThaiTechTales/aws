@@ -9,7 +9,7 @@ Parameters:
   InstanceType:
     Type: String
     Default: t2.micro
-    Description: Instance type for the instances
+    Description: Instance type for the instances.
 
   SubnetIds:
     Type: CommaDelimitedList
@@ -121,5 +121,5 @@ Resources:
               Service: ec2.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
-          - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-          - arn:aws:iam::aws:policy/AmazonInspectorFullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/AmazonInspectorFullAccess
