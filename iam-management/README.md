@@ -153,10 +153,6 @@ This project focuses on mastering AWS Identity and Access Management (IAM) by pr
     aws cloudformation delete-stack --stack-name iam-user
     aws cloudformation delete-stack --stack-name iam-role
     aws cloudformation delete-stack --stack-name iam-policy
-    ```    
-
-### CloudFormation
+    ```
 
 ## Screenshots
-
-###

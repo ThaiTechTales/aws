@@ -16,4 +16,4 @@ This repository serves as a centralised hub for all AWS-related projects. The ai
 - **notification-system:** Notification and messaging system using Simple Notification Service (SNS) and Simple Queue Service (SQS) integrated with Lambda
 - **logging-monitoring:** Logging and monitoring for AWS resources. It includes CloudTrail for tracking API activities and CloudWatch for performance metrics and event monitoring. Alerts are sent via Amazon SNS when alarms are triggered.
 - **inspector:** Security assessment using both AWS Inspector Classic and AWS Inspector v2 for standalone EC2 instances and EC2 instances deployed through an Auto Scaling Group (ASG).
-- **iam-management:** Identity and Access Management (IAM) for managing groups, users, roles and policies. 
+- **iam-management:** Identity and Access Management (IAM) for managing groups, users, roles and policies.
