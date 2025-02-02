@@ -77,7 +77,62 @@ This project focuses on mastering AWS Identity and Access Management (IAM) by pr
     terraform apply
     ```
 
+### CloudFormation
+
+1. Validate the CloudFormation template:
+
+    ```bash
+    
+    aws cloudformation validate-template --template-body file://iam-group.yaml
+    aws cloudformation validate-template --template-body file://iam-policy.yaml
+    aws cloudformation validate-template --template-body file://iam-role.yaml
+    aws cloudformation validate-template --template-body file://iam-user.yaml
+
+    ```
+
+2. Create the CloudFormation stack:
+
+    ```bash
+    
+    aws cloudformation create-stack \
+    --stack-name iam-group \
+    --template-body file://iam-group.yaml \
+    --parameters \
+        ParameterKey=GroupNames,ParameterValue="developers\,deployers\,readers" \
+    --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+    --region ap-southeast-2
+
+    aws cloudformation create-stack \
+    --stack-name iam-user \
+    --template-body file://iam-user.yaml \
+    --parameters \
+        ParameterKey=UserNames,ParameterValue="developer-01\,deployer-01\,reader-01" \
+        ParameterKey=Groups,ParameterValue="developers\,deployers\,readers" \
+    --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+    --region ap-southeast-2
+
+    aws cloudformation create-stack \
+    --stack-name iam-role \
+    --template-body file://iam-role.yaml \
+    --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+    --region ap-southeast-2
+
+    aws cloudformation create-stack \
+    --stack-name iam-policy \
+    --template-body file://iam-policy.yaml \
+    --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+    --region ap-southeast-2
+
+    ```
+
 ## Testing
+
+| Step          | Command/Action | Expected Output  |
+| ------------- | -------------- | -----------------|
+| View IAM Groups | Navigate to IAM Console, Click on Groups | IAM groups should be listed |
+| View IAM Users | Navigate to IAM Console, Click on Users | IAM users should be listed |
+| View IAM Roles | Navigate to IAM Console, Click on Roles | IAM roles should be listed |
+| View IAM Policies | Navigate to IAM Console, Click on Policies | IAM policies should be listed |
 
 ## Cleanup
 
@@ -88,6 +143,17 @@ This project focuses on mastering AWS Identity and Access Management (IAM) by pr
     ```bash
     terraform destroy
     ```
+
+### CloudFormation
+
+1. Destroy resources
+
+    ```bash
+    aws cloudformation delete-stack --stack-name iam-group
+    aws cloudformation delete-stack --stack-name iam-user
+    aws cloudformation delete-stack --stack-name iam-role
+    aws cloudformation delete-stack --stack-name iam-policy
+    ```    
 
 ### CloudFormation
 

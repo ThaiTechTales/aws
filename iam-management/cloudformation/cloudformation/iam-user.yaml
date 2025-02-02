@@ -1,0 +1,56 @@
+Transform: AWS::LanguageExtensions
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  CloudFormation Template for IAM Users and Group Membership using ForEach loops.
+  This template creates multiple IAM users and assigns a specific user to multiple groups.
+
+Parameters:
+  UserNames:
+    Type: CommaDelimitedList
+    Description: List of IAM user names to create.
+    Default: "user1,user2,user3"
+  Groups:
+    Type: CommaDelimitedList
+    Description: List of groups to assign to the user.
+
+Resources:
+  # Create multiple IAM users based on the UserNames parameter.
+  "Fn::ForEach::IAMUser":
+    - UserName # Loop variable for each user name.
+    - !Ref UserNames # List of user names provided as a parameter.
+    - "&{UserName}User": # Dynamically generated resource name.
+        Type: AWS::IAM::User
+        Properties:
+          UserName: !Ref UserName
+          Tags:
+            - Key: Environment
+              Value: Development
+
+  # Create a specific IAM user that will be added to groups.
+  IAMUserWithGroups:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: user-dev-apse2-multiple-groups-01
+      Tags:
+        - Key: Environment
+          Value: Development
+
+  # Add the user-with-groups to each group specified in the Groups parameter.
+  "Fn::ForEach::UserGroupMembership":
+    - GroupName # Loop variable for each group name.
+    - !Ref Groups # List of group names provided as a parameter.
+    - "&{GroupName}Membership": # Dynamically generated resource name.
+        Type: AWS::IAM::UserToGroupAddition
+        Properties:
+          GroupName: !Ref GroupName
+          Users:
+            - !Ref IAMUserWithGroups
+
+Outputs:
+  CreatedUsers:
+    Description: List of IAM Users created via the ForEach loop.
+    Value: !Join [", ", !Ref UserNames]
+
+  IAMUserWithGroupsOutput:
+    Description: The IAM User with group memberships.
+    Value: !Ref IAMUserWithGroups

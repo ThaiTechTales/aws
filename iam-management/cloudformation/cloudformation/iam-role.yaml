@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CloudFormation Template for IAM Roles
+
+Resources:
+  IAMRoleWithNoPolicy:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "role-dev-apse-${AWS::StackName}-RoleWithNoPolicy-01"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+
+  IAMRoleWithInlinePolicy:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "role-dev-apse-${AWS::StackName}-RoleWithInlinePolicy-01"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: "policy-dev-apse-${AWS::StackName}-InlinePolicy-01"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource: "*"
+
+  IAMRoleWithManagedPolicy:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "role-dev-apse-${AWS::StackName}-RoleWithManagedPolicy-01"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
+Outputs:
+  IAMRoleWithNoPolicyOutput:
+    Description: The IAM Role with no policy attached
+    Value: !Ref IAMRoleWithNoPolicy
+
+  IAMRoleWithInlinePolicyOutput:
+    Description: The IAM Role with an inline policy attached
+    Value: !Ref IAMRoleWithInlinePolicy
+
+  IAMRoleWithManagedPolicyOutput:
+    Description: The IAM Role with a managed policy attached
+    Value: !Ref IAMRoleWithManagedPolicy

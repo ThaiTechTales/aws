@@ -1,0 +1,33 @@
+Transform: AWS::LanguageExtensions
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create multiple IAM groups
+
+Parameters:
+  GroupNames:
+    Type: CommaDelimitedList
+    Description: Comma separated list of IAM group names to create.
+    Default: "group1,group2,group3"
+
+Resources:
+  # Use the ForEach loop provided by the AWS::LanguageExtensions macro.
+  "Fn::ForEach::Group":
+    - GroupName # Iterating variable.
+    - !Ref GroupNames # List of group names from the parameter.
+    - "&{GroupName}Group": # Dynamically generated resource name.
+        Type: AWS::IAM::Group
+        Properties:
+          GroupName: !Ref GroupName # Use the current loop variable value.
+          Policies:
+            - PolicyName: !Sub "${GroupName}Policy"
+              PolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                  - Effect: "Allow"
+                    Action:
+                      - "s3:GetObject"
+                    Resource: "*"
+
+Outputs:
+  CreatedGroups:
+    Description: "List of IAM Groups created"
+    Value: !Join [", ", !Ref GroupNames] #!Join: Combines the list of group names into a single string.
