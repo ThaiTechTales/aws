@@ -3,6 +3,20 @@
 ## Project Overview
 This project implements a real-time serverless data pipeline to process IoT sensor data efficiently. IoT devices publish sensor data to AWS IoT Core, which routes it to Kinesis Data Streams. AWS Lambda processes and transforms this data before storing it in DynamoDB for real-time querying. AWS QuickSight visualises this data to provide insights. For deeper analytics, AWS Glue extracts, transforms, and loads (ETL) data into Amazon Redshift.
 
+## Workflow
+
+1. **IoT Devices Send Data:** IoT devices publish real-time sensor data (e.g., temperature, humidity) to AWS IoT Core.
+2. **AWS IoT Core Routes Data to Kinesis:** IoT Core rules forward data to Amazon Kinesis Data Streams for real-time ingestion
+3. **Kinesis Streams Process Data:** AWS Kinesis holds the incoming data stream, ensuring scalability and real-time processing. It also, triggers Lambda functions to process the data.
+4. **AWS Lambda Transforms Data:** A Lambda function fetches data from Kinesis, processes it (e.g., normalizes values, removes noise), and stores it in DynamoDB.
+5. **AWS DynamoDB Stores Data:** The transformed IoT data is stored in a DynamoDB table for real-time querying.
+6. **AWS QuickSight Visualises Data:** QuickSight queries DynamoDB to provide insights into trends and anomalies.
+7. **AWS Glue Performs ETL to Amazon Redshift:** Periodically, AWS Glue extracts data from DynamoDB, transforms it, and loads it into Redshift for in-depth analytics.
+
+The following diagram represents the workflow of this project.
+
+![Architecture Diagram](images/architecture-diagram/architecture-diagram.png)
+
 ## Technologies Used
 
 - **AWS IoT Core:** Securely connects IoT devices to AWS and routes their data to other services.
@@ -18,7 +32,7 @@ This project implements a real-time serverless data pipeline to process IoT sens
 
 ## Key Terms
 
-- **IoT Devices:** Physical devices embedded with sensors, software, and connectivity to exchange data with other devices or systems over the internet. Examples include temperature sensors, smart thermostats, and industrial machinery sensors.
+- **IoT Devices:** Physical devices embedded with sensors, software, and connectivity to exchange data with other devices or systems over the internet.
 - **AWS IoT Core:** A managed cloud service that allows IoT devices to securely connect and interact with AWS services and other devices. It handles device authentication, data routing, and communication protocols.
 - **Kinesis Data Streams:** A real-time data streaming service that enables the continuous capture and processing of large volumes of data from multiple sources. It supports real-time analytics, data transformation, and event-driven applications.
 - **AWS Lambda:** A serverless compute service that automatically runs code in response to events, such as data arriving in a Kinesis stream, without the need to manage servers. It scales automatically based on the workload.
@@ -33,6 +47,36 @@ This project implements a real-time serverless data pipeline to process IoT sens
 
 
 ## Key Concepts
+
+**Internet of Things (IoT):**
+The Internet of Things refers to the interconnected network of physical devices that collect and exchange data using embedded sensors and software. These devices can range from household gadgets like smart thermostats to industrial machines monitoring production lines. IoT enables real-time data collection and automation, driving efficiencies across industries.
+
+**Real-Time Data Processing:**
+Real-time data processing involves capturing, analysing, and acting on data as soon as it is generated. This allows businesses to respond immediately to changes, such as adjusting machine operations in an industrial setting or triggering alerts for unusual sensor readings in smart homes. Real-time processing ensures minimal latency between data generation and action.
+
+**Serverless Computing:**
+Serverless computing allows developers to build and run applications without managing the underlying infrastructure. AWS Lambda is a great example, where code execution is event-driven, automatically scaling based on demand. This reduces operational overhead and costs, as billing is based on execution time rather than pre-allocated resources.
+
+**Data Streaming with Kinesis:**
+AWS Kinesis Data Streams enables the ingestion and processing of large volumes of data in real-time. It acts as a buffer for incoming data from multiple sources, such as IoT devices, and ensures that the data can be processed or stored without loss. Kinesis supports parallel data processing, allowing multiple consumers like AWS Lambda to handle different aspects of the data stream.
+
+**Data Transformation:**
+Data transformation involves converting raw data into a structured format suitable for storage and analysis. In this project, AWS Lambda functions are responsible for transforming IoT sensor data—such as normalising temperature readings or filtering out invalid data—before storing it in DynamoDB.
+
+**NoSQL Databases (DynamoDB):**
+NoSQL databases like Amazon DynamoDB are designed to handle unstructured or semi-structured data with high flexibility and scalability. Unlike traditional relational databases, DynamoDB uses a key-value model, which is ideal for handling dynamic IoT data with varying attributes. It offers low-latency access for real-time applications.
+
+**Data Visualisation with QuickSight:**
+AWS QuickSight enables the creation of interactive dashboards and visual reports from data stored in services like DynamoDB. Visualisations help identify trends, anomalies, and insights from the IoT data, providing stakeholders with actionable intelligence in an accessible format.
+
+**ETL (Extract, Transform, Load) Pipelines:**
+ETL is the process of moving data from a source system, transforming it into a usable format, and loading it into a target system for analysis. In this architecture, AWS Glue performs ETL by extracting data from DynamoDB, transforming it as necessary, and loading it into Amazon Redshift for complex querying and deep analytics.
+
+**Data Warehousing (Amazon Redshift):**
+A data warehouse like Amazon Redshift is optimised for querying large datasets and running complex analytical queries. It aggregates processed IoT data from multiple sources, allowing for historical trend analysis, forecasting, and large-scale reporting beyond real-time capabilities.
+
+**Event-Driven Architecture:**
+This architecture pattern relies on events to trigger and communicate between services. For example, new IoT data entering a Kinesis stream triggers a Lambda function, which processes the data and stores it in DynamoDB. Event-driven systems are highly scalable, as they can handle a large number of events asynchronously.
 
 
 ## Requirements
@@ -69,17 +113,13 @@ This project implements a real-time serverless data pipeline to process IoT sens
 
 1. Validate the CloudFormation template:
 
-
 2. Create the CloudFormation stack:
 
 ## Testing
 
 | Step          | Command/Action | Expected Output  |
 | ------------- | -------------- | -----------------|
-| View IAM Groups | Navigate to IAM Console, Click on Groups | IAM groups should be listed |
-| View IAM Users | Navigate to IAM Console, Click on Users | IAM users should be listed |
-| View IAM Roles | Navigate to IAM Console, Click on Roles | IAM roles should be listed |
-| View IAM Policies | Navigate to IAM Console, Click on Policies | IAM policies should be listed |
+
 
 ## Cleanup
 
@@ -94,6 +134,5 @@ This project implements a real-time serverless data pipeline to process IoT sens
 ### CloudFormation
 
 1. Destroy resources
-
 
 ## Screenshots
