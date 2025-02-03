@@ -1,6 +1,7 @@
 # Amazon Inspector
 
 ## Project Overview
+
 This project implements a real-time serverless data pipeline to process IoT sensor data efficiently. IoT devices publish sensor data to AWS IoT Core, which routes it to Kinesis Data Streams. AWS Lambda processes and transforms this data before storing it in DynamoDB for real-time querying. AWS QuickSight visualises this data to provide insights. For deeper analytics, AWS Glue extracts, transforms, and loads (ETL) data into Amazon Redshift.
 
 ## Workflow
@@ -45,7 +46,6 @@ The following diagram represents the workflow of this project.
 - **Event Source Mapping:** A mechanism in AWS Lambda that connects event sources like Kinesis streams to Lambda functions, automatically invoking the function when new data arrives.
 - **IAM (Identity and Access Management):** A service that helps control access to AWS resources securely by defining roles and permissions for users, applications, and services.
 
-
 ## Key Concepts
 
 **Internet of Things (IoT):**
@@ -77,7 +77,6 @@ A data warehouse like Amazon Redshift is optimised for querying large datasets a
 
 **Event-Driven Architecture:**
 This architecture pattern relies on events to trigger and communicate between services. For example, new IoT data entering a Kinesis stream triggers a Lambda function, which processes the data and stores it in DynamoDB. Event-driven systems are highly scalable, as they can handle a large number of events asynchronously.
-
 
 ## Requirements
 
@@ -119,7 +118,6 @@ This architecture pattern relies on events to trigger and communicate between se
 
 | Step          | Command/Action | Expected Output  |
 | ------------- | -------------- | -----------------|
-
 
 ## Cleanup
 
