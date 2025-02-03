@@ -13,7 +13,7 @@ resource "aws_glue_crawler" "dynamodb_to_redshift" {
 }
 
 resource "aws_iam_role" "glue_role" {
-  name = "glue-role"
+  name = var.role_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -27,7 +27,7 @@ resource "aws_iam_role" "glue_role" {
 }
 
 resource "aws_iam_role_policy" "glue_policy" {
-  name = "glue-policy"
+  name = var.policy_name
   role = aws_iam_role.glue_role.id
   policy = jsonencode({
     Version = "2012-10-17",
