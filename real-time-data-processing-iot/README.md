@@ -116,8 +116,91 @@ This architecture pattern relies on events to trigger and communicate between se
 
 ## Testing
 
-| Step          | Command/Action | Expected Output  |
-| ------------- | -------------- | -----------------|
+### 1. Basic Functional Tests
+
+#### Test 1: Standard Sensor Data (Normal Range)
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n '{"device_id": "sensor-101", "timestamp": 1700100000, "temperature": 22, "humidity": 55}' | base64)"
+```
+
+#### Test 2: High Temperature Alert
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n '{"device_id": "sensor-102", "timestamp": 1700100500, "temperature": 75, "humidity": 40}' | base64)"
+```
+
+#### Test 3: Low Humidity Alert
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n '{"device_id": "sensor-103", "timestamp": 1700101000, "temperature": 21, "humidity": 10}' | base64)"
+```
+
+### 2. Edge Case Tests
+
+This tests how Lambda handles incomplete data.
+
+#### Test 4: Missing Fields (Humidity Missing)
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n '{"device_id": "sensor-104", "timestamp": 1700101500, "temperature": 30}' | base64)"
+```
+
+#### Test 5: Invalid Data Format
+
+This test sends invalid JSON to ensure error handling is in place.
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n 'Invalid JSON Data' | base64)"
+```
+
+### 3. Out-of-Range Data Test
+
+This tests how the system handles extreme values.
+
+#### Test 6: Extremely High Temperature
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n '{"device_id": "sensor-105", "timestamp": 1700103000, "temperature": 150, "humidity": 30}' | base64)"
+
+```
+
+#### Test 7: Negative Temperature and Humidity
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n '{"device_id": "sensor-106", "timestamp": 1700103500, "temperature": -10, "humidity": -5}' | base64)"
+```
+
+### 5. Multi-Sensor Complex Data Test
+
+Simulate multiple sensors with varying readings for a more realistic scenario.
+
+```bash
+aws iot-data publish \
+  --topic "iot/sensors" \
+  --payload "$(echo -n '{"device_id": "sensor-107", "timestamp": 1700104000, "temperature": 25, "humidity": 65, "pressure": 1012}' | base64)"
+
+```
+
+### 6. Verify Data in DynamoDB
+
+```bash
+    aws dynamodb scan --table-name dynambodb-dev-apse2-iotdata-01
+```
 
 ## Cleanup
 
