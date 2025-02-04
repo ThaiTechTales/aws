@@ -199,7 +199,7 @@ aws iot-data publish \
 ### 6. Verify Data in DynamoDB
 
 ```bash
-    aws dynamodb scan --table-name dynambodb-dev-apse2-iotdata-01
+aws dynamodb scan --table-name dynambodb-dev-apse2-iotdata-01
 ```
 
 ## Cleanup
