@@ -17,8 +17,17 @@ resource "aws_iam_role_policy" "lambda_kinesis_policy" {
   role = aws_iam_role.lambda_role.id
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
+      {
+        Action = [
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:GetItem"
+        ],
+        Effect   = "Allow",
+        Resource = "*" # TODO: restrict to the DynamoDB table
+      },
       {
         Action = [
           "kinesis:GetRecords",
@@ -27,9 +36,10 @@ resource "aws_iam_role_policy" "lambda_kinesis_policy" {
           "kinesis:DescribeStreamSummary",
           "kinesis:ListShards",
           "kinesis:ListStreams"
-        ]
-        Effect   = "Allow"
-        Resource = var.kinesis_stream_arn
+        ],
+        Effect = "Allow",
+        # Resource = "arn:aws:kinesis:ap-southeast-2:481390061994:stream/kinesis-dev-apse2-iotdata-01"
+        Resource = "*" #TODO: restrict to the Kinesis stream
       }
     ]
   })

@@ -12,6 +12,26 @@ resource "aws_iam_role" "iot_role" {
   })
 }
 
+resource "aws_iam_role_policy" "iot_kinesis_policy" {
+  name = var.policy_name
+  role = aws_iam_role.iot_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "kinesis:PutRecord",
+          "kinesis:PutRecords"
+        ],
+        Effect   = "Allow",
+        Resource = "*" #TODO: restrict to the Kinesis stream
+      }
+    ]
+  })
+}
+
+
 resource "aws_iot_topic_rule" "iot_to_kinesis" {
   name        = var.policy_name
   enabled     = true
