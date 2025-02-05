@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project implements a real-time serverless data pipeline to process IoT sensor data efficiently. IoT devices publish sensor data to AWS IoT Core, which routes it to Kinesis Data Streams. AWS Lambda processes and transforms this data before storing it in DynamoDB for real-time querying. AWS QuickSight visualises this data to provide insights. For deeper analytics, AWS Glue extracts, transforms, and loads (ETL) data into Amazon Redshift.
+This project implements a real-time serverless data pipeline to process IoT sensor data efficiently. IoT devices publish sensor data to AWS IoT Core, which routes it to Kinesis Data Streams. AWS Lambda processes and transforms this data before storing it in DynamoDB for real-time querying. For deeper analytics, AWS Glue extracts, transforms, and loads (ETL) data into Amazon Redshift.
 
 ## Workflow
 
@@ -11,7 +11,6 @@ This project implements a real-time serverless data pipeline to process IoT sens
 3. **Kinesis Streams Process Data:** AWS Kinesis holds the incoming data stream, ensuring scalability and real-time processing. It also, triggers Lambda functions to process the data.
 4. **AWS Lambda Transforms Data:** A Lambda function fetches data from Kinesis, processes it (e.g., normalises values, removes noise), and stores it in DynamoDB.
 5. **AWS DynamoDB Stores Data:** The transformed IoT data is stored in a DynamoDB table for real-time querying.
-6. **AWS QuickSight Visualises Data:** QuickSight queries DynamoDB to provide insights into trends and anomalies.
 7. **AWS Glue Performs ETL to Amazon Redshift:** Periodically, AWS Glue extracts data from DynamoDB, transforms it, and loads it into Redshift for in-depth analytics.
 
 The following diagram represents the workflow of this project.
@@ -24,7 +23,6 @@ The following diagram represents the workflow of this project.
 - **AWS Kinesis Data Streams:** A real-time data streaming service used for ingesting large volumes of sensor data.
 - **AWS Lambda:** Processes the streamed data by transforming and filtering it before storage.
 - **Amazon DynamoDB:** A NoSQL database for storing the processed IoT data for real-time querying.
-- **AWS QuickSight:** Provides visual analytics and dashboards for real-time insights into the IoT data.
 - **AWS Glue:** An ETL (Extract, Transform, Load) service that integrates with Amazon Redshift for deeper analytics.
 - **Amazon Redshift:** A fully managed data warehouse used for complex queries and large-scale analytics.
 - **IAM:** Identity and Access Management for defining roles and permissions.
@@ -38,7 +36,6 @@ The following diagram represents the workflow of this project.
 - **Kinesis Data Streams:** A real-time data streaming service that enables the continuous capture and processing of large volumes of data from multiple sources. It supports real-time analytics, data transformation, and event-driven applications.
 - **AWS Lambda:** A serverless compute service that automatically runs code in response to events, such as data arriving in a Kinesis stream, without the need to manage servers. It scales automatically based on the workload.
 - **Amazon DynamoDB:** A fully managed NoSQL database service that offers fast and predictable performance with seamless scalability. It stores the processed data in a key-value format for real-time querying.
-- **AWS QuickSight:** A business intelligence service that allows users to create and share interactive dashboards and visualisations from various data sources, including DynamoDB.
 - **AWS Glue:** A serverless ETL (Extract, Transform, Load) service that prepares and transforms data for analytics. It can move data from DynamoDB to Redshift for more complex querying.
 - **Amazon Redshift:** A fast, scalable data warehouse service designed for large-scale data analysis and complex queries. It integrates with AWS Glue for deep analytical processing.
 - **ETL (Extract, Transform, Load):** A process in data integration that involves extracting data from source systems, transforming it into a suitable format, and loading it into a target system for analysis.
@@ -65,9 +62,6 @@ Data transformation involves converting raw data into a structured format suitab
 
 **NoSQL Databases (DynamoDB):**
 NoSQL databases like Amazon DynamoDB are designed to handle unstructured or semi-structured data with high flexibility and scalability. Unlike traditional relational databases, DynamoDB uses a key-value model, which is ideal for handling dynamic IoT data with varying attributes. It offers low-latency access for real-time applications.
-
-**Data Visualisation with QuickSight:**
-AWS QuickSight enables the creation of interactive dashboards and visual reports from data stored in services like DynamoDB. Visualisations help identify trends, anomalies, and insights from the IoT data, providing stakeholders with actionable intelligence in an accessible format.
 
 **ETL (Extract, Transform, Load) Pipelines:**
 ETL is the process of moving data from a source system, transforming it into a usable format, and loading it into a target system for analysis. In this architecture, AWS Glue performs ETL by extracting data from DynamoDB, transforming it as necessary, and loading it into Amazon Redshift for complex querying and deep analytics.
