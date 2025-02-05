@@ -60,9 +60,12 @@ resource "aws_lambda_function" "iot_lambda" {
   }
 }
 
+# Creates a mapping between an event source and an AWS Lambda function. Lambda reads items from the event source and triggers the function.
 resource "aws_lambda_event_source_mapping" "kinesis_trigger" {
-  event_source_arn  = var.kinesis_stream_arn
-  function_name     = aws_lambda_function.iot_lambda.arn
+  event_source_arn = var.kinesis_stream_arn
+  function_name    = aws_lambda_function.iot_lambda.arn
+
+  # Starting position is the position in the stream where the Lambda function should start reading  
   starting_position = "LATEST"
 }
 

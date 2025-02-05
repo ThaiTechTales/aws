@@ -31,10 +31,12 @@ resource "aws_iam_role_policy" "iot_kinesis_policy" {
   })
 }
 
-
+# Topic Rule to forward messages from IoT Core to Kinesis
 resource "aws_iot_topic_rule" "iot_to_kinesis" {
-  name        = var.policy_name
-  enabled     = true
+  name    = var.policy_name
+  enabled = true
+
+  # sql is used to select the messages to forward
   sql         = "SELECT * FROM 'iot/sensors'"
   sql_version = "2016-03-23"
 

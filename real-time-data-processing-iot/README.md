@@ -33,7 +33,7 @@ The following diagram represents the workflow of this project.
 
 - **IoT Devices:** Physical devices embedded with sensors, software, and connectivity to exchange data with other devices or systems over the internet.
 - **AWS IoT Core:** A managed cloud service that allows IoT devices to securely connect and interact with AWS services and other devices. It handles device authentication, data routing, and communication protocols.
-- **Kinesis Data Streams:** A real-time data streaming service that enables the continuous capture and processing of large volumes of data from multiple sources. It supports real-time analytics, data transformation, and event-driven applications.
+- **Kinesis Data Streams:** A real-time data streaming service that enables the continuous capture and processing of large volumes of data from multiple sources. Think of it as a pipeline for continuous data flows like logs, metrics, clickstreams, or IoT device data. It supports real-time analytics, data transformation, and event-driven applications.
 - **AWS Lambda:** A serverless compute service that automatically runs code in response to events, such as data arriving in a Kinesis stream, without the need to manage servers. It scales automatically based on the workload.
 - **Amazon DynamoDB:** A fully managed NoSQL database service that offers fast and predictable performance with seamless scalability. It stores the processed data in a key-value format for real-time querying.
 - **AWS Glue:** A serverless ETL (Extract, Transform, Load) service that prepares and transforms data for analytics. It can move data from DynamoDB to Redshift for more complex querying.
@@ -45,32 +45,74 @@ The following diagram represents the workflow of this project.
 
 ## Key Concepts
 
+### Serverless Architecture
+
+**Event-Driven Architecture:**
+This architecture pattern relies on events to trigger and communicate between services. For example, new IoT data entering a Kinesis stream triggers a Lambda function, which processes the data and stores it in DynamoDB. Event-driven systems are highly scalable, as they can handle a large number of events asynchronously.
+
+### IoT
+
 **Internet of Things (IoT):**
 The Internet of Things refers to the interconnected network of physical devices that collect and exchange data using embedded sensors and software. These devices can range from household gadgets like smart thermostats to industrial machines monitoring production lines. IoT enables real-time data collection and automation, driving efficiencies across industries.
+
+### Kinesis Data Streams
 
 **Real-Time Data Processing:**
 Real-time data processing involves capturing, analysing, and acting on data as soon as it is generated. This allows businesses to respond immediately to changes, such as adjusting machine operations in an industrial setting or triggering alerts for unusual sensor readings in smart homes. Real-time processing ensures minimal latency between data generation and action.
 
-**Serverless Computing:**
-Serverless computing allows developers to build and run applications without managing the underlying infrastructure. AWS Lambda is a great example, where code execution is event-driven, automatically scaling based on demand. This reduces operational overhead and costs, as billing is based on execution time rather than pre-allocated resources.
-
 **Data Streaming with Kinesis:**
 AWS Kinesis Data Streams enables the ingestion and processing of large volumes of data in real-time. It acts as a buffer for incoming data from multiple sources, such as IoT devices, and ensures that the data can be processed or stored without loss. Kinesis supports parallel data processing, allowing multiple consumers like AWS Lambda to handle different aspects of the data stream.
+
+**What is a Kinesis Shard?:**
+A shard in Kinesis is a unit of capacity that handles the streaming data. It is a uniquely identified sequence of data records in a Kinesis stream. It defines how much data can be ingested (write to Kinesis) and process (read from Kinesis) at any given time i.e. they are the base throughput unit of a Kinesis stream, and the number of shards determines the stream's capacity to ingest and process data. Shards can scale up or down based on data flow requirements and more shards allow for higher throughput but also increase costs. Think of shards as lanes on a highway—more lanes help handle more traffic (data).
+
+**Partitioning Data Across Shards:**
+When data is sent to Kinesis, a partition key (a unique ID) is used. Kinesis uses this key to decide which shard the data goes to, helping distribute the load evenly.
+
+### AWS Lambda
+
+**Serverless Computing:**
+Serverless computing allows developers to build and run applications without managing the underlying infrastructure. AWS Lambda is a great example, where code execution is event-driven, automatically scaling based on demand. This reduces operational overhead and costs, as billing is based on execution time rather than pre-allocated resources.
 
 **Data Transformation:**
 Data transformation involves converting raw data into a structured format suitable for storage and analysis. In this project, AWS Lambda functions are responsible for transforming IoT sensor data—such as normalising temperature readings or filtering out invalid data—before storing it in DynamoDB.
 
+### DynamoDB
+
 **NoSQL Databases (DynamoDB):**
 NoSQL databases like Amazon DynamoDB are designed to handle unstructured or semi-structured data with high flexibility and scalability. Unlike traditional relational databases, DynamoDB uses a key-value model, which is ideal for handling dynamic IoT data with varying attributes. It offers low-latency access for real-time applications.
+
+### AWS Glue
 
 **ETL (Extract, Transform, Load) Pipelines:**
 ETL is the process of moving data from a source system, transforming it into a usable format, and loading it into a target system for analysis. In this architecture, AWS Glue performs ETL by extracting data from DynamoDB, transforming it as necessary, and loading it into Amazon Redshift for complex querying and deep analytics.
 
+**Glue Catalog Database:**
+The Glue Data Catalog acts as a central metadata repository for storing table definitions, schema information, and other metadata.  It is used to organises and store metadata about data. This simplifies data discovery and management, allowing Glue to understand the structure of the data it processes. Think of it as a directory or folder that holds information about datasets, like tables, their schemas, and data locations.
+
+**AWS Glue Crawler:**
+An AWS Glue Crawler is a tool that automatically scans data (like in S3, DynamoDB), figures out its structure, and then creates metadata for it in the AWS Glue Data Catalog. This makes it easier to query and analyse data using services like AWS Glue, Athena, or Redshift Spectrum.
+
+From the schema of the files (e.g. CSV, JSON, Parquet, etc), the crawler can determine the data types, columns, and partitions in the data. It can also detect changes in the data structure and update the metadata accordingly.
+
+This is useful for dynamic data sources where the schema may change frequently, as the crawler can adapt to these changes and keep the metadata up-to-date.
+
+- A new datasets in S3 needs to be analysed with Amazon Athena or processed in AWS Glue.
+- The data structure changes frequently, and you don’t want to update schemas manually.
+- You’re building a data lake and need an automated way to manage metadata across multiple data sources.
+
+It is called a crawler because just like how **web crawlers** (like Google’s bots) scan websites to collect information about web pages (titles, keywords, links), the AWS Glue Crawler scans data sources to collect metadata. Instead of web pages, Glue Crawlers scan datasets in places like Amazon S3, RDS, or DynamoDB.
+
+The crawler automatically **explores** data, detecting its structure (schemas, columns, data types) without any manual input.
+It can navigate through **folders**, **partitions**, and **files** to discover all available datasets.
+
+
+### Amazon Redshift
+
 **Data Warehousing (Amazon Redshift):**
 A data warehouse like Amazon Redshift is optimised for querying large datasets and running complex analytical queries. It aggregates processed IoT data from multiple sources, allowing for historical trend analysis, forecasting, and large-scale reporting beyond real-time capabilities.
 
-**Event-Driven Architecture:**
-This architecture pattern relies on events to trigger and communicate between services. For example, new IoT data entering a Kinesis stream triggers a Lambda function, which processes the data and stores it in DynamoDB. Event-driven systems are highly scalable, as they can handle a large number of events asynchronously.
+**Cluster:** A Redshift cluster is a collection of nodes that work together to perform data warehousing tasks to store and analyse large amounts of data. It consists of a leader node and one or more compute nodes. The leader node manages client connections and coordinates the compute nodes, which store and query the data. The cluster handles everything from storing data to processing queries and returning results and is designed for data warehousing and analytics—allowing complex SQL queries on huge datasets quickly and efficiently.
 
 ## Requirements
 
