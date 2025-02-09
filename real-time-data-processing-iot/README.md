@@ -238,6 +238,13 @@ aws iot-data publish \
 aws dynamodb scan --table-name dynambodb-dev-apse2-iotdata-01
 ```
 
+### 7. Run Glue Crawler
+
+```bash
+aws glue start-crawler --name crawler-dev-apse2-iot-01
+```
+
+
 ## Cleanup
 
 ### Terraform

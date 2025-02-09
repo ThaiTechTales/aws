@@ -55,3 +55,9 @@ variable "redshift_cluster_name" {
   type        = string
 
 }
+
+variable "glue_database_name" {
+  description = "The name of the Glue database"
+  type        = string
+
+}

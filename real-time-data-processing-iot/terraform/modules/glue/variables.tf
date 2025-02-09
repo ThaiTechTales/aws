@@ -20,3 +20,9 @@ variable "crawler_name" {
   type        = string
 
 }
+
+variable "database_name" {
+  description = "The name of the Glue database"
+  type        = string
+
+}

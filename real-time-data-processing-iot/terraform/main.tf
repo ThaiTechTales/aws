@@ -29,6 +29,7 @@ module "glue" {
   role_name           = var.glue_role_name
   policy_name         = var.glue_policy_name
   crawler_name        = var.glue_crawler_name
+  database_name       = var.glue_database_name
 }
 
 module "redshift" {

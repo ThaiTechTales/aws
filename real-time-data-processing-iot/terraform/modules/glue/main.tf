@@ -1,5 +1,5 @@
 resource "aws_glue_catalog_database" "iot_db" {
-  name = "iot_glue_db"
+  name = var.database_name
 }
 
 resource "aws_glue_crawler" "dynamodb_to_redshift" {
