@@ -11,7 +11,7 @@ This project implements a real-time serverless data pipeline to process IoT sens
 3. **Kinesis Streams Process Data:** AWS Kinesis holds the incoming data stream, ensuring scalability and real-time processing. It also, triggers Lambda functions to process the data.
 4. **AWS Lambda Transforms Data:** A Lambda function fetches data from Kinesis, processes it and stores it in DynamoDB.
 5. **AWS DynamoDB Stores Data:** The transformed IoT data is stored in a DynamoDB table for real-time querying.
-6. **AWS Glue Performs ETL to Amazon Redshift:** Periodically, AWS Glue extracts data from DynamoDB, transforms it, and loads it into Redshift for in-depth analytics. Note as of this project, Redshift is deployed but not used.
+6. **AWS Glue Performs ETL to Amazon Redshift:** AWS Glue extracts data from DynamoDB, transforms it, and loads it into Redshift for in-depth analytics. Note as of the current state of this project, Redshift is deployed but not used.
 
 The following diagram represents the workflow of this project.
 
@@ -105,7 +105,6 @@ It is called a crawler because just like how **web crawlers** (like Google’s b
 
 The crawler automatically **explores** data, detecting its structure (schemas, columns, data types) without any manual input.
 It can navigate through **folders**, **partitions**, and **files** to discover all available datasets.
-
 
 ### Amazon Redshift
 
@@ -244,6 +243,11 @@ aws dynamodb scan --table-name dynambodb-dev-apse2-iotdata-01
 aws glue start-crawler --name crawler-dev-apse2-iot-01
 ```
 
+### 8. View Glue Data Catalog
+
+```bash
+aws glue get-tables --database-name database-dev-apse2-iot-01
+```
 
 ## Cleanup
 
@@ -254,9 +258,5 @@ aws glue start-crawler --name crawler-dev-apse2-iot-01
     ```bash
     terraform destroy
     ```
-
-### CloudFormation
-
-1. Destroy resources
 
 ## Screenshots
