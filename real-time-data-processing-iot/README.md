@@ -260,3 +260,51 @@ aws glue get-tables --database-name database-dev-apse2-iot-01
     ```
 
 ## Screenshots
+
+### AWS IoT Core
+
+The following screenshot below shows the provisioned IAM role and policy.
+
+![IoT](images/iot/iot-01.png)
+
+### AWS Kinesis Data Streams
+
+The following screenshot below shows the provisioned Kinesis Data Stream.
+
+![Kinesis](images/kinesis/kinesis-01.png)
+![Kinesis](images/kinesis/kinesis-02.png)
+
+### AWS Lambda
+
+The following screenshot below shows the provisioned Lambda function.
+
+![Lambda](images/lambda/lambda-01.png)
+![Lambda](images/lambda/lambda-02.png)
+![Lambda](images/lambda/lambda-03.png)
+
+### Amazon DynamoDB
+
+The following screenshot below shows the provisioned DynamoDB table.
+
+![DynamoDB](images/dynamodb/dynamodb-01.png)
+![DynamoDB](images/dynamodb/dynamodb-02.png)
+![DynamoDB](images/dynamodb/dynamodb-03.png)
+![DynamoDB](images/dynamodb/dynamodb-04.png)
+
+### AWS Glue
+
+The following screenshot below shows the provisioned Glue Crawler and Data Catalog.
+
+![Glue](images/glue/glue-01.png)
+![Glue](images/glue/glue-02.png)
+![Glue](images/glue/glue-03.png)
+![Glue](images/glue/glue-04.png)
+![Glue](images/glue/glue-05.png)
+![Glue](images/glue/glue-06.png)
+![Glue](images/glue/glue-07.png)
+
+### Amazon Redshift
+
+The following screenshot below shows the provisioned Redshift cluster.
+
+![Redshift](images/redshift/redshift-01.png)
