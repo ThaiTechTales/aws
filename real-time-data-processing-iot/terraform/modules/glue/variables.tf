@@ -14,3 +14,9 @@ variable "policy_name" {
   type        = string
 
 }
+
+variable "crawler_name" {
+  description = "The name of the Glue crawler"
+  type        = string
+
+}

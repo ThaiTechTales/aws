@@ -28,6 +28,7 @@ module "glue" {
   dynamodb_table_name = module.dynamodb.table_name
   role_name           = var.glue_role_name
   policy_name         = var.glue_policy_name
+  crawler_name        = var.glue_crawler_name
 }
 
 module "redshift" {

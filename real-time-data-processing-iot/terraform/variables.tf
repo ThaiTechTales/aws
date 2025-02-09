@@ -44,6 +44,12 @@ variable "lambda_policy_name" {
 
 }
 
+variable "glue_crawler_name" {
+  description = "The name of the Glue crawler"
+  type        = string
+
+}
+
 variable "redshift_cluster_name" {
   description = "The name of the Redshift cluster to store processed IoT data"
   type        = string

@@ -3,7 +3,7 @@ resource "aws_glue_catalog_database" "iot_db" {
 }
 
 resource "aws_glue_crawler" "dynamodb_to_redshift" {
-  name          = "iot-glue-crawler"
+  name          = var.crawler_name
   database_name = aws_glue_catalog_database.iot_db.name
   role          = aws_iam_role.glue_role.arn
 

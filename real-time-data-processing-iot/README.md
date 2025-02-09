@@ -9,7 +9,7 @@ This project implements a real-time serverless data pipeline to process IoT sens
 1. **IoT Devices Send Data:** IoT devices publish real-time sensor data (e.g., temperature, humidity) to AWS IoT Core.
 2. **AWS IoT Core Routes Data to Kinesis:** IoT Core rules forward data to Amazon Kinesis Data Streams for real-time ingestion
 3. **Kinesis Streams Process Data:** AWS Kinesis holds the incoming data stream, ensuring scalability and real-time processing. It also, triggers Lambda functions to process the data.
-4. **AWS Lambda Transforms Data:** A Lambda function fetches data from Kinesis, processes it (e.g., normalises values, removes noise), and stores it in DynamoDB.
+4. **AWS Lambda Transforms Data:** A Lambda function fetches data from Kinesis, processes it and stores it in DynamoDB.
 5. **AWS DynamoDB Stores Data:** The transformed IoT data is stored in a DynamoDB table for real-time querying.
 6. **AWS Glue Performs ETL to Amazon Redshift:** Periodically, AWS Glue extracts data from DynamoDB, transforms it, and loads it into Redshift for in-depth analytics.
 
