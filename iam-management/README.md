@@ -156,3 +156,27 @@ This project focuses on mastering AWS Identity and Access Management (IAM) by pr
     ```
 
 ## Screenshots
+
+### IAM Group
+
+The following screenshot below shows the provisioned IAM groups:
+
+![IAM](images/iam/iam-group-01.png)
+
+### IAM User
+
+The following screenshot below shows the provisioned IAM users:
+
+![IAM](images/iam/iam-user-01.png)
+
+### IAM Role
+
+The following screenshot below shows the provisioned IAM roles:
+
+![IAM](images/iam/iam-role-01.png)
+
+### IAM Policy
+
+The following screenshot below shows the provisioned IAM policies:
+
+![IAM](images/iam/iam-policy-01.png)
