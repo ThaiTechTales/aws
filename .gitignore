@@ -41,6 +41,12 @@ terraform.rc
 __pycache__/
 *.pyc
 *.pyo
+.venv/
+
+# Packaging (pip install .)
+*.egg-info/
+build/
+dist/
 
 # IDE files
 .idea/

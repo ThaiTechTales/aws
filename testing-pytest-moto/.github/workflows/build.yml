@@ -1,0 +1,42 @@
+
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'dev'
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      - 'release/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest      # Use the latest stable Ubuntu runner
+
+    steps:
+    # Step 1: Checkout the repository code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'  # Specify your required Python version
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip     # Upgrade pip to the latest version
+        pip install setuptools                  # Install setuptools for packaging support
+        pip install .                           # Install the current project as a package (expects setup.py or pyproject.toml). . indicates the current directory
+        pip install -r tests/requirements.txt   # Install test-specific dependencies. -r indicates a requirements file
+        pip install coverage                    # Install coverage for test coverage tracking
+
+    # Step 4: Run tests and show coverage report
+    - name: Run tests with coverage
+      run: |
+        coverage run -m pytest tests/           # Run tests using coverage
+        coverage report -m                      # Output detailed coverage report in the console
