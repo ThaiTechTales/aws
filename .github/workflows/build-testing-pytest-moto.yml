@@ -37,5 +37,5 @@ jobs:
     # Step 4: Run tests and show coverage report
     - name: Run tests with coverage
       run: |
-        coverage run -m pytest tests/           # Run tests using coverage
-        coverage report -m                      # Output detailed coverage report in the console
+        coverage run -m pytest testing-pytest-moto/tests/   # Run tests using coverage
+        coverage report -m                                  # Output detailed coverage report in the console
