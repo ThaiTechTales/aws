@@ -31,7 +31,7 @@ jobs:
         python -m pip install --upgrade pip     # Upgrade pip to the latest version
         pip install setuptools                  # Install setuptools for packaging support
         pip install .                           # Install the current project as a package (expects setup.py or pyproject.toml). . indicates the current directory
-        pip install -r tests/requirements.txt   # Install test-specific dependencies. -r indicates a requirements file
+        pip install -r testing-pytest-moto/tests/requirements.txt   # Install test-specific dependencies. -r indicates a requirements file
         pip install coverage                    # Install coverage for test coverage tracking
 
     # Step 4: Run tests and show coverage report
